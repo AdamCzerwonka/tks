@@ -1,6 +1,5 @@
-package com.example.pasik.model.dto.RealEstate;
+package com.example.tks.adapter.data.model;
 
-import com.example.pasik.model.RealEstate;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -9,9 +8,9 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import java.util.UUID;
 
 @Data
-public class MgdRealEstate {
+public class RealEstateEnt {
     @BsonCreator
-    public MgdRealEstate(
+    public RealEstateEnt(
             @BsonId UUID id,
             @BsonProperty(NAME) String name,
             @BsonProperty(ADDRESS) String address,
@@ -22,25 +21,6 @@ public class MgdRealEstate {
         this.address = address;
         this.area = area;
         this.price = price;
-    }
-
-    public static MgdRealEstate toMgdRealEstate(RealEstate realEstate) {
-        return new MgdRealEstate(
-                realEstate.getId(),
-                realEstate.getName(),
-                realEstate.getAddress(),
-                realEstate.getArea(),
-                realEstate.getPrice());
-    }
-
-    public RealEstate toRealEstate() {
-        return new RealEstate(
-                getId(),
-                getName(),
-                getAddress(),
-                getArea(),
-                getPrice()
-        );
     }
 
     @BsonId

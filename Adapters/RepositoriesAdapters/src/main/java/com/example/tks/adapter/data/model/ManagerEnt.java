@@ -1,7 +1,5 @@
-package com.example.pasik.model.dto.Manager;
+package com.example.tks.adapter.data.model;
 
-import com.example.pasik.model.Manager;
-import com.example.pasik.model.dto.User.MgdUser;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -10,9 +8,10 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import java.util.UUID;
 
 @BsonDiscriminator(key = "_clazz", value = "manager")
-public class MgdManager extends MgdUser {
+public class ManagerEnt extends UserEnt {
+
     @BsonCreator
-    public MgdManager(@BsonId UUID id,
+    public ManagerEnt(@BsonId UUID id,
                       @BsonProperty(FIRST_NAME) String firstName,
                       @BsonProperty(LAST_NAME) String lastName,
                       @BsonProperty(LOGIN) String login,
@@ -20,22 +19,6 @@ public class MgdManager extends MgdUser {
                       @BsonProperty("role") String role,
                       @BsonProperty(PASSWORD) String password) {
         super(id, firstName, lastName, login, active, role, password);
-    }
-
-    public static MgdManager toMgdManager(Manager manager) {
-        return new MgdManager(
-                manager.getId(), manager.getFirstName(), manager.getLastName(), manager.getLogin(), manager.getActive(), manager.getRole(), manager.getPassword());
-    }
-
-    public Manager toManager() {
-        return new Manager(
-                getId(),
-                getFirstName(),
-                getLastName(),
-                getLogin(),
-                getActive(),
-                getPassword()
-        );
     }
 
     public final static String ID = "_id";

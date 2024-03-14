@@ -1,10 +1,7 @@
-package com.example.pasik.repositories.mongo;
+package com.example.tks.adapter.data.repositories.mongo;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.model.Client;
-import com.example.pasik.model.dto.Client.MgdClient;
-import com.example.pasik.repositories.ClientRepository;
+import com.example.tks.adapter.data.model.ClientEnt;
+import com.example.tks.adapter.data.repositories.ClientRepository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -20,72 +17,66 @@ import java.util.regex.Pattern;
 
 @Repository
 public class MongoClientRepository implements ClientRepository {
-    private final MongoCollection<MgdClient> collection;
+    private final MongoCollection<ClientEnt> collection;
     private final MongoCollection documentCollection;
 
     public MongoClientRepository(MongoDatabase database) {
-        this.collection = database.getCollection("users", MgdClient.class);
+        this.collection = database.getCollection("users", ClientEnt.class);
         this.documentCollection = database.getCollection("users");
     }
 
     @Override
-    public List<Client> get() {
+    public List<ClientEnt> get() {
         Bson filter = Filters.eq("_clazz", "client");
 
         return collection
                 .find(filter)
-                .into(new ArrayList<>())
-                .stream()
-                .map(MgdClient::toClient)
-                .toList();
+                .into(new ArrayList<>());
     }
 
     @Override
-    public List<Client> findClientsByLogin(String login) {
+    public List<ClientEnt> findClientsByLogin(String login) {
         Pattern pattern = Pattern.compile(login, Pattern.CASE_INSENSITIVE);
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "client"),
-                Filters.regex(MgdClient.LOGIN, pattern)
+                Filters.regex(ClientEnt.LOGIN, pattern)
         );
 
         return collection
                 .find(filters)
-                .into(new ArrayList<>())
-                .stream()
-                .map(MgdClient::toClient)
-                .toList();
+                .into(new ArrayList<>());
     }
 
     @Override
-    public Optional<Client> getById(UUID id) {
+    public Optional<ClientEnt> getById(UUID id) {
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "client"),
-                Filters.eq(MgdClient.ID, id)
+                Filters.eq(ClientEnt.ID, id)
         );
-        MgdClient result = collection.find(filters).first();
+        ClientEnt result = collection.find(filters).first();
         if (result == null) {
             return Optional.empty();
         }
-        return Optional.of(result.toClient());
+        return Optional.of(result);
     }
 
     @Override
-    public Optional<Client> getByLogin(String login) {
+    public Optional<ClientEnt> getByLogin(String login) {
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "client"),
-                Filters.eq(MgdClient.LOGIN, login)
+                Filters.eq(ClientEnt.LOGIN, login)
         );
-        MgdClient result = collection.find(filters).first();
+        ClientEnt result = collection.find(filters).first();
         if (result == null) {
             return Optional.empty();
         }
 
-        return Optional.of(result.toClient());
+        return Optional.of(result);
     }
 
     @Override
-    public Client create(Client client) throws LoginAlreadyTakenException {
-        Bson filter = Filters.eq(MgdClient.LOGIN, client.getLogin());
+    public ClientEnt create(ClientEnt client) throws LoginAlreadyTakenException {
+        Bson filter = Filters.eq(ClientEnt.LOGIN, client.getLogin());
         Object existing = documentCollection.find(filter).first();
 
         if (existing != null) {
@@ -93,25 +84,25 @@ public class MongoClientRepository implements ClientRepository {
         }
 
         client.setId(UUID.randomUUID());
-        collection.insertOne(MgdClient.toMgdClient(client));
+        collection.insertOne(client);
 
         return client;
     }
 
     @Override
-    public Client update(Client client) throws NotFoundException {
+    public ClientEnt update(ClientEnt client) throws NotFoundException {
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "client"),
-                Filters.eq(MgdClient.ID, client.getId())
+                Filters.eq(ClientEnt.ID, client.getId())
         );
         Bson updates = Updates.combine(
-                Updates.set(MgdClient.FIRST_NAME, client.getFirstName()),
-                Updates.set(MgdClient.LAST_NAME, client.getLastName()),
-                Updates.set(MgdClient.ACTIVE, client.getActive())
+                Updates.set(ClientEnt.FIRST_NAME, client.getFirstName()),
+                Updates.set(ClientEnt.LAST_NAME, client.getLastName()),
+                Updates.set(ClientEnt.ACTIVE, client.getActive())
         );
         collection.updateOne(filters, updates);
 
-        Optional<Client> response = getById(client.getId());
+        Optional<ClientEnt> response = getById(client.getId());
 
         if (response.isEmpty()) {
             throw new NotFoundException("Client with given id does not exists");

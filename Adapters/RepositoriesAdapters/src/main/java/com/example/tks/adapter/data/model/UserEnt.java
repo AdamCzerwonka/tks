@@ -1,6 +1,5 @@
-package com.example.pasik.model.dto.User;
+package com.example.tks.adapter.data.model;
 
-import com.example.pasik.model.User;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
@@ -11,9 +10,9 @@ import java.util.UUID;
 
 @Data
 @BsonDiscriminator(key = "_clazz", value = "user")
-public class MgdUser {
+public class UserEnt {
     @BsonCreator
-    public MgdUser(@BsonId UUID id,
+    public UserEnt(@BsonId UUID id,
                    @BsonProperty("firstName") String firstName,
                    @BsonProperty("lastName") String lastName,
                    @BsonProperty("login") String login,
@@ -43,8 +42,4 @@ public class MgdUser {
     private String role;
     @BsonProperty("password")
     private String password;
-
-    public static User MgdUserToUser(MgdUser user) {
-        return new User(user.getId(), user.getFirstName(), user.getLastName(), user.getLogin(), user.getActive(), user.getRole(), user.getPassword());
-    }
 }

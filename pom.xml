@@ -16,6 +16,7 @@
         <module>ApplicationCore</module>
         <module>Adapters</module>
         <module>ApplicationPorts</module>
+        <module>Applications</module>
     </modules>
 
     <groupId>org.example</groupId>

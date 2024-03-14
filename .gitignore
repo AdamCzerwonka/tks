@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+HELP.md
+
+### IntelliJ IDEA ###
+.idea

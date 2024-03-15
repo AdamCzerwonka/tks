@@ -1,14 +1,15 @@
 package com.example.tks.core.services.impl;
 
-import com.example.pasik.exceptions.*;
-import com.example.pasik.managers.RentManager;
-import com.example.pasik.model.Client;
-import com.example.pasik.model.RealEstate;
-import com.example.pasik.model.Rent;
-import com.example.pasik.repositories.ClientRepository;
-import com.example.pasik.repositories.RealEstateRepository;
-import com.example.pasik.repositories.RentRepository;
-import org.springframework.stereotype.Component;
+
+import com.example.tks.core.domain.exceptions.*;
+import com.example.tks.core.domain.model.Client;
+import com.example.tks.core.domain.model.RealEstate;
+import com.example.tks.core.services.RentManager;
+import com.example.tks.ports.infrastructure.ClientPort;
+import com.example.tks.ports.infrastructure.RealEstatePort;
+import com.example.tks.ports.infrastructure.RentPort;
+import com.example.tks.core.domain.model.Rent;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,19 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class RentManagerImpl implements RentManager {
-    private final RentRepository rentRepository;
-    private final ClientRepository clientRepository;
-    private final RealEstateRepository realEstateRepository;
-
-    public RentManagerImpl(
-            final RentRepository rentRepository,
-            final ClientRepository clientRepository,
-            final RealEstateRepository realEstateRepository) {
-        this.rentRepository = rentRepository;
-        this.clientRepository = clientRepository;
-        this.realEstateRepository = realEstateRepository;
-    }
+    private final RentPort rentRepository;
+    private final ClientPort clientRepository;
+    private final RealEstatePort realEstateRepository;
 
     @Override
     public Rent create(UUID clientId, UUID realEstateId, LocalDate startDate) throws NotFoundException,

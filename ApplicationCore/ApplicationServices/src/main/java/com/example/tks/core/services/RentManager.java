@@ -1,8 +1,7 @@
 package com.example.tks.core.services;
 
-import com.example.pasik.exceptions.*;
-import com.example.pasik.model.RealEstate;
-import com.example.pasik.model.Rent;
+import com.example.tks.core.domain.exceptions.*;
+import com.example.tks.core.domain.model.Rent;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,7 +15,9 @@ public interface RentManager {
     List<Rent> getByClientId(UUID clientId, boolean current);
 
     List<Rent> get();
+
     Rent getById(UUID id) throws NotFoundException;
+
     void delete(UUID id) throws RentEndedException;
 
 

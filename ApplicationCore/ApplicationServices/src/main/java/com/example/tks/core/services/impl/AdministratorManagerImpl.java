@@ -1,10 +1,11 @@
 package com.example.tks.core.services.impl;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.AdministratorManager;
-import com.example.pasik.model.Administrator;
-import com.example.pasik.repositories.AdministratorRepository;
+
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.model.Administrator;
+import com.example.tks.core.services.AdministratorManager;
+import com.example.tks.ports.infrastructure.AdministratorPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class AdministratorManagerImpl implements AdministratorManager {
-    private final AdministratorRepository administratorRepository;
+    private final AdministratorPort administratorRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override

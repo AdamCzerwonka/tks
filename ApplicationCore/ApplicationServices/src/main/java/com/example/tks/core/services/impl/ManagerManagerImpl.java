@@ -1,13 +1,13 @@
 package com.example.tks.core.services.impl;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.ManagerManager;
-import com.example.pasik.model.Manager;
-import com.example.pasik.repositories.ManagerRepository;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.model.Manager;
+import com.example.tks.ports.infrastructure.ManagerPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.tks.core.services.ManagerManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ManagerManagerImpl implements ManagerManager {
-    private final ManagerRepository managerRepository;
+    private final ManagerPort managerRepository;
     private final PasswordEncoder passwordEncoder;
 
 

@@ -1,6 +1,6 @@
 package com.example.tks.core.services;
 
-import com.example.pasik.model.User;
+import com.example.tks.core.domain.model.User;
 
 import java.util.List;
 import java.util.UUID;

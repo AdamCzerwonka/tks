@@ -1,10 +1,10 @@
 package com.example.tks.core.services.impl;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.ClientManager;
-import com.example.pasik.model.Client;
-import com.example.pasik.repositories.ClientRepository;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.model.Client;
+import com.example.tks.core.services.ClientManager;
+import com.example.tks.ports.infrastructure.ClientPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ClientManagerImpl implements ClientManager {
-    private final ClientRepository clientRepository;
+    private final ClientPort clientRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override

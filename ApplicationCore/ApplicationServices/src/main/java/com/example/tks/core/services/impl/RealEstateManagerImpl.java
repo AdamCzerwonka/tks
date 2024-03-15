@@ -1,12 +1,13 @@
 package com.example.tks.core.services.impl;
 
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.exceptions.RealEstateRentedException;
-import com.example.pasik.managers.RealEstateManager;
-import com.example.pasik.model.RealEstate;
-import com.example.pasik.model.Rent;
-import com.example.pasik.repositories.RealEstateRepository;
-import com.example.pasik.repositories.RentRepository;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.exceptions.RealEstateRentedException;
+import com.example.tks.core.domain.model.RealEstate;
+import com.example.tks.core.domain.model.Rent;
+import com.example.tks.core.services.RealEstateManager;
+import com.example.tks.ports.infrastructure.RealEstatePort;
+import com.example.tks.ports.infrastructure.RentPort;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class RealEstateManagerImpl implements RealEstateManager {
-    private final RealEstateRepository realEstateRepository;
-    private final RentRepository rentRepository;
-
-    public RealEstateManagerImpl(final RealEstateRepository realEstateRepository, final RentRepository rentRepository) {
-        this.realEstateRepository = realEstateRepository;
-        this.rentRepository = rentRepository;
-    }
+    private final RealEstatePort realEstateRepository;
+    private final RentPort rentRepository;
 
     public RealEstate create(RealEstate realEstate) {
         return realEstateRepository.create(realEstate);

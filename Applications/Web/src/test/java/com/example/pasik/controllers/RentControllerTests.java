@@ -1,10 +1,7 @@
 package com.example.pasik.controllers;
 
-import com.example.pasik.model.Client;
-import com.example.pasik.model.RealEstate;
-import com.example.pasik.model.Rent;
-import com.example.pasik.model.dto.Rent.RentCreateRequest;
-import com.example.pasik.seeder.TestDataSeeder;
+import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
+import com.example.tks.app.web.seeder.TestDataSeeder;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

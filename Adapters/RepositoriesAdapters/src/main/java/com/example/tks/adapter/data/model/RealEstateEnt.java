@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.RealEstate;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -22,6 +23,26 @@ public class RealEstateEnt {
         this.area = area;
         this.price = price;
     }
+
+    public static RealEstateEnt toRealEstateEnt(RealEstate realEstate) {
+        return new RealEstateEnt(
+                realEstate.getId(),
+                realEstate.getName(),
+                realEstate.getAddress(),
+                realEstate.getArea(),
+                realEstate.getPrice());
+    }
+
+    public RealEstate toRealEstate() {
+        return new RealEstate(
+                getId(),
+                getName(),
+                getAddress(),
+                getArea(),
+                getPrice()
+        );
+    }
+
 
     @BsonId
     private UUID id;

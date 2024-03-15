@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.Manager;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -19,6 +20,22 @@ public class ManagerEnt extends UserEnt {
                       @BsonProperty("role") String role,
                       @BsonProperty(PASSWORD) String password) {
         super(id, firstName, lastName, login, active, role, password);
+    }
+
+    public static ManagerEnt toManagerEnt(Manager manager) {
+        return new ManagerEnt(
+                manager.getId(), manager.getFirstName(), manager.getLastName(), manager.getLogin(), manager.getActive(), manager.getRole(), manager.getPassword());
+    }
+
+    public Manager toManager() {
+        return new Manager(
+                getId(),
+                getFirstName(),
+                getLastName(),
+                getLogin(),
+                getActive(),
+                getPassword()
+        );
     }
 
     public final static String ID = "_id";

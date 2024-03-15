@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.User;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
@@ -26,6 +27,10 @@ public class UserEnt {
         this.active = active;
         this.role = role;
         this.password = password;
+    }
+
+    public User toUser() {
+        return new User(getId(), getFirstName(), getLastName(), getLogin(), getActive(), getRole(), getPassword());
     }
 
     @BsonId

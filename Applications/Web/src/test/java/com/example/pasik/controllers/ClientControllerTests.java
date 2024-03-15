@@ -1,9 +1,9 @@
 package com.example.pasik.controllers;
 
-import com.example.pasik.model.dto.Client.ClientCreateRequest;
-import com.example.pasik.model.dto.Client.ClientUpdateRequest;
-import com.example.pasik.model.dto.RealEstate.RealEstateRequest;
-import com.example.pasik.model.dto.Rent.RentCreateRequest;
+import com.example.tks.app.web.model.dto.Client.ClientCreateRequest;
+import com.example.tks.app.web.model.dto.Client.ClientUpdateRequest;
+import com.example.tks.app.web.model.dto.RealEstate.RealEstateRequest;
+import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;

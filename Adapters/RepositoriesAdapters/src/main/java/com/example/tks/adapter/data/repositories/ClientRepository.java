@@ -1,6 +1,8 @@
 package com.example.tks.adapter.data.repositories;
 
 import com.example.tks.adapter.data.model.ClientEnt;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;

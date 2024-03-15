@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.Administrator;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -18,6 +19,22 @@ public class AdministratorEnt extends UserEnt {
                             @BsonProperty("role") String role,
                             @BsonProperty(PASSWORD) String password) {
         super(id, firstName, lastName, login, active, role, password);
+    }
+
+    public static AdministratorEnt toAdministratorEnt(Administrator administrator) {
+        return new AdministratorEnt(
+                administrator.getId(), administrator.getFirstName(), administrator.getLastName(), administrator.getLogin(), administrator.getActive(), administrator.getRole(), administrator.getPassword());
+    }
+
+    public Administrator toAdministrator() {
+        return new Administrator(
+                getId(),
+                getFirstName(),
+                getLastName(),
+                getLogin(),
+                getActive(),
+                getPassword()
+        );
     }
 
 

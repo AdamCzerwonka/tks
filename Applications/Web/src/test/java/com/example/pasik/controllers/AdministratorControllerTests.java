@@ -1,7 +1,7 @@
 package com.example.pasik.controllers;
 
-import com.example.pasik.model.dto.Administrator.AdministratorCreateRequest;
-import com.example.pasik.model.dto.Administrator.AdministratorUpdateRequest;
+import com.example.tks.app.web.model.dto.Administrator.AdministratorCreateRequest;
+import com.example.tks.app.web.model.dto.Administrator.AdministratorUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.JSONException;

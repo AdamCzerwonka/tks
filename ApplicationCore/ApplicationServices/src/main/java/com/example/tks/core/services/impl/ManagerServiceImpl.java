@@ -7,7 +7,7 @@ import com.example.tks.ports.infrastructure.ManagerPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.tks.core.services.ManagerManager;
+import com.example.tks.core.services.ManagerService;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ManagerManagerImpl implements ManagerManager {
+public class ManagerServiceImpl implements ManagerService {
     private final ManagerPort managerRepository;
     private final PasswordEncoder passwordEncoder;
 

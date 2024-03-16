@@ -4,7 +4,7 @@ import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.exceptions.RealEstateRentedException;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.domain.model.Rent;
-import com.example.tks.core.services.RealEstateManager;
+import com.example.tks.core.services.RealEstateService;
 import com.example.tks.ports.infrastructure.RealEstatePort;
 import com.example.tks.ports.infrastructure.RentPort;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class RealEstateManagerImpl implements RealEstateManager {
+public class RealEstateServiceImpl implements RealEstateService {
     private final RealEstatePort realEstateRepository;
     private final RentPort rentRepository;
 

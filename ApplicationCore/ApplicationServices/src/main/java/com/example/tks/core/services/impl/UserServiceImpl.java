@@ -1,6 +1,6 @@
 package com.example.tks.core.services.impl;
 
-import com.example.tks.core.services.UserManager;
+import com.example.tks.core.services.UserService;
 import com.example.tks.ports.infrastructure.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserManagerImpl implements UserManager {
+public class UserServiceImpl implements UserService {
     private final UserPort userRepository;
     private final PasswordEncoder passwordEncoder;
 

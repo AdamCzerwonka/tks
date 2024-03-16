@@ -7,7 +7,7 @@ import com.example.tks.core.domain.model.Manager;
 import java.util.List;
 import java.util.UUID;
 
-public interface ManagerManager {
+public interface ManagerService {
     List<Manager> get();
 
     List<Manager> findManagersByLogin(String login);

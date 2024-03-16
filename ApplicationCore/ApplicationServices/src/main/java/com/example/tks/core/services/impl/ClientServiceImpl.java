@@ -3,7 +3,7 @@ package com.example.tks.core.services.impl;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Client;
-import com.example.tks.core.services.ClientManager;
+import com.example.tks.core.services.ClientService;
 import com.example.tks.ports.infrastructure.ClientPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ClientManagerImpl implements ClientManager {
+public class ClientServiceImpl implements ClientService {
     private final ClientPort clientRepository;
     private final PasswordEncoder passwordEncoder;
 

@@ -7,7 +7,7 @@ import com.example.tks.core.domain.model.RealEstate;
 import java.util.List;
 import java.util.UUID;
 
-public interface RealEstateManager {
+public interface RealEstateService {
     RealEstate create(RealEstate realEstate);
 
     List<RealEstate> get();

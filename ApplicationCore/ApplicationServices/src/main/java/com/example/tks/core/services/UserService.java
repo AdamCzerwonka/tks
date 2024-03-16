@@ -5,7 +5,7 @@ import com.example.tks.core.domain.model.User;
 import java.util.List;
 import java.util.UUID;
 
-public interface UserManager {
+public interface UserService {
     List<User> getAll(String filter);
 
     User getById(UUID id);

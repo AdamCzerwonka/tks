@@ -4,7 +4,7 @@ package com.example.tks.core.services.impl;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Administrator;
-import com.example.tks.core.services.AdministratorManager;
+import com.example.tks.core.services.AdministratorService;
 import com.example.tks.ports.infrastructure.AdministratorPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AdministratorManagerImpl implements AdministratorManager {
+public class AdministratorServiceImpl implements AdministratorService {
     private final AdministratorPort administratorRepository;
     private final PasswordEncoder passwordEncoder;
 

@@ -6,7 +6,7 @@ import com.example.tks.core.domain.exceptions.*;
 import java.util.List;
 import java.util.UUID;
 
-public interface AdministratorManager {
+public interface AdministratorService {
     List<Administrator> get();
 
     List<Administrator> findAdministratorsByLogin(String login);

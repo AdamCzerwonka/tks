@@ -8,7 +8,7 @@ import com.example.tks.core.domain.model.Client;
 import java.util.List;
 import java.util.UUID;
 
-public interface ClientManager {
+public interface ClientService {
     List<Client> get();
 
     List<Client> findClientsByLogin(String login);

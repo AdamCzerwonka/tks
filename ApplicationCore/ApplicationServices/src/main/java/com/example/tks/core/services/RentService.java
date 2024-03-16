@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public interface RentManager {
+public interface RentService {
     Rent create(UUID clientId, UUID realEstateId, LocalDate startDate) throws NotFoundException, AccountInactiveException, RealEstateRentedException;
 
     void endRent(UUID id) throws NotFoundException, RentEndedException, InvalidEndRentDateException;

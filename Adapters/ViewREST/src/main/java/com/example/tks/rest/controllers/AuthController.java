@@ -1,7 +1,8 @@
-package com.example.tks.app.web.controllers;
+package com.example.tks.rest.controllers;
 
 import com.example.tks.app.web.model.dto.User.LoginUserRequest;
 import com.example.tks.core.services.JwtService;
+import com.example.tks.core.services.UserManager;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.example.tks.core.services.UserManager;
 
 import java.util.HashMap;
 import java.util.Map;

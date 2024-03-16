@@ -1,14 +1,9 @@
-package com.example.tks.adapter.data.controllers;
+package com.example.tks.rest.controllers;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.ClientManager;
-import com.example.pasik.managers.RentManager;
-import com.example.tks.app.web.jws.Jws;
-import com.example.tks.app.web.model.dto.Client.ClientCreateRequest;
-import com.example.tks.app.web.model.dto.Client.ClientUpdateRequest;
-import com.example.tks.app.web.model.dto.Rent.RentResponse;
-import com.example.tks.app.web.model.dto.User.UserResponse;
+import com.example.tks.rest.aggregates.ClientServiceAdapter;
+import com.example.tks.rest.aggregates.RentServiceAdapter;
+import com.example.tks.rest.model.Client.ClientCreateRequest;
+import com.example.tks.rest.model.Rent.RentResponse;
 import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
@@ -27,11 +22,11 @@ import java.util.UUID;
 @RestController()
 @RequestMapping("/client")
 public class ClientController {
-    private final ClientManager clientManager;
-    private final RentManager rentManager;
+    private final ClientServiceAdapter clientManager;
+    private final RentServiceAdapter rentManager;
     private final Jws jws;
 
-    public ClientController(final ClientManager clientManager, final RentManager rentManager, Jws jws) {
+    public ClientController(final ClientServiceAdapter clientManager, final RentServiceAdapter rentManager, Jws jws) {
         this.clientManager = clientManager;
         this.rentManager = rentManager;
         this.jws = jws;
@@ -40,7 +35,7 @@ public class ClientController {
     @GetMapping
     @RolesAllowed("ADMINISTRATOR")
     public ResponseEntity<?> get() {
-        var result = clientManager.get().stream().map(UserResponse::fromUser).toList();
+        var result = clientManager.get();
 
         return ResponseEntity.ok(result);
     }
@@ -50,17 +45,17 @@ public class ClientController {
         var result = clientManager.getById(id);
         var signed = jws.sign(result.getId().toString());
 
-        return ResponseEntity.ok().header("Etag", signed).body(UserResponse.fromUser(result));
+        return ResponseEntity.ok().header("Etag", signed).body(result);
     }
 
     @GetMapping("/{id}/rents")
     public ResponseEntity<List<RentResponse>> getRents(@PathVariable UUID id, @RequestParam(defaultValue = "true") boolean current) {
-        return ResponseEntity.ok(rentManager.getByClientId(id, current).stream().map(RentResponse::fromRent).toList());
+        return ResponseEntity.ok(rentManager.getByClientId(id, current));
     }
 
     @GetMapping("/login/many/{login}")
     public ResponseEntity<?> findClientsByLogin(@PathVariable String login) {
-        var result = clientManager.findClientsByLogin(login).stream().map(UserResponse::fromUser).toList();
+        var result = clientManager.findClientsByLogin(login);
 
         return ResponseEntity.ok(result);
     }
@@ -69,14 +64,14 @@ public class ClientController {
     public ResponseEntity<?> getByLogin(@PathVariable String login) throws NotFoundException {
         var result = clientManager.getByLogin(login);
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ClientCreateRequest request) throws URISyntaxException, LoginAlreadyTakenException {
         var result = clientManager.create(request.ToClient());
 
-        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
+        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(result);
     }
 
     @PutMapping
@@ -87,7 +82,7 @@ public class ClientController {
         if (!isOk) {
             return ResponseEntity.badRequest().build();
         }
-        var result = clientManager.update(request.ToClient());
+        var result = clientManager.update(request);
 
         return ResponseEntity.ok(UserResponse.fromUser(result));
     }

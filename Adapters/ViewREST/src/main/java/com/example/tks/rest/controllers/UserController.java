@@ -1,7 +1,7 @@
-package com.example.tks.app.web.controllers;
+package com.example.tks.rest.controllers;
 
-import com.example.tks.app.web.jws.Jws;
 import com.example.pasik.managers.UserManager;
+import com.example.tks.app.web.jws.Jws;
 import com.example.tks.app.web.model.dto.User.UserResponse;
 import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;

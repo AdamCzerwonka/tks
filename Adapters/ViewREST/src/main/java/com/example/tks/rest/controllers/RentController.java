@@ -1,4 +1,4 @@
-package com.example.tks.adapter.data.controllers;
+package com.example.tks.rest.controllers;
 
 import com.example.pasik.exceptions.*;
 import com.example.pasik.managers.RentManager;

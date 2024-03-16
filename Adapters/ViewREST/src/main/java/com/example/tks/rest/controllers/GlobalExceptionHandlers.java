@@ -1,4 +1,4 @@
-package com.example.tks.adapter.data.controllers;
+package com.example.tks.rest.controllers;
 
 import com.example.pasik.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;

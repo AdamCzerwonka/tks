@@ -1,4 +1,4 @@
-package com.example.tks.app.web.controllers;
+package com.example.tks.rest.controllers;
 
 import com.example.pasik.managers.UserManager;
 import com.example.tks.app.web.model.dto.User.ChangePasswordRequest;

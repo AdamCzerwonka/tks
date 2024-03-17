@@ -2,6 +2,8 @@ package com.example.tks.adapter.data.repositories.mongo;
 
 import com.example.tks.adapter.data.model.ClientEnt;
 import com.example.tks.adapter.data.repositories.ClientRepository;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -35,7 +37,7 @@ public class MongoClientRepository implements ClientRepository {
     }
 
     @Override
-    public List<ClientEnt> findClientsByLogin(String login) {
+    public List<ClientEnt> findAllByLogin(String login) {
         Pattern pattern = Pattern.compile(login, Pattern.CASE_INSENSITIVE);
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "client"),

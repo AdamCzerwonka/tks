@@ -7,7 +7,7 @@ import com.example.tks.ports.infrastructure.ManagerPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.tks.core.services.ManagerService;
+import com.example.tks.core.services.interfaces.ManagerService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List<Manager> findManagersByLogin(String login) {
+    public List<Manager> findAllByLogin(String login) {
         return managerRepository.findManagersByLogin(login);
     }
 
@@ -46,7 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
         Optional<Manager> manager = managerRepository.getByLogin(login);
 
         if (manager.isEmpty()) {
-            throw new NotFoundException("Manager with given id does not exists");
+            throw new NotFoundException("Manager with given login does not exists");
         }
 
         return manager.get();

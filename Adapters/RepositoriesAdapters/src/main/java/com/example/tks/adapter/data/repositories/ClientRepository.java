@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface ClientRepository {
     List<ClientEnt> get();
 
-    List<ClientEnt> findClientsByLogin(String login);
+    List<ClientEnt> findAllByLogin(String login);
 
     Optional<ClientEnt> getById(UUID id);
 

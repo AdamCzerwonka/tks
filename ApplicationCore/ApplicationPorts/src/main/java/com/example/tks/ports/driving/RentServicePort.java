@@ -1,5 +1,8 @@
 package com.example.tks.ports.driving;
 
+import com.example.tks.core.domain.exceptions.*;
+import com.example.tks.core.domain.model.Rent;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;

@@ -26,7 +26,7 @@ public class AdministratorRepositoryAdapter implements AdministratorPort {
 
     @Override
     public List<Administrator> findAdministratorsByLogin(String login) {
-        List<AdministratorEnt> result = repository.findAdministratorsByLogin(login);
+        List<AdministratorEnt> result = repository.findAllByLogin(login);
         return result.stream().map(AdministratorEnt::toAdministrator).toList();
     }
 

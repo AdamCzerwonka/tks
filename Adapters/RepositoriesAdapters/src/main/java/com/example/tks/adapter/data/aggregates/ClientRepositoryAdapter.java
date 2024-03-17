@@ -26,7 +26,7 @@ public class ClientRepositoryAdapter implements ClientPort {
 
     @Override
     public List<Client> findClientsByLogin(String login) {
-        List<ClientEnt> result = clientRepository.findClientsByLogin(login);
+        List<ClientEnt> result = clientRepository.findAllByLogin(login);
         return result.stream().map(ClientEnt::toClient).toList();
     }
 

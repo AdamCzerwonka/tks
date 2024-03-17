@@ -4,7 +4,7 @@ package com.example.tks.core.services.impl;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Administrator;
-import com.example.tks.core.services.AdministratorService;
+import com.example.tks.core.services.interfaces.AdministratorService;
 import com.example.tks.ports.infrastructure.AdministratorPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +26,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     }
 
     @Override
-    public List<Administrator> findAdministratorsByLogin(String login) {
+    public List<Administrator> findAllByLogin(String login) {
         return administratorRepository.findAdministratorsByLogin(login);
     }
 
@@ -46,7 +46,7 @@ public class AdministratorServiceImpl implements AdministratorService {
         Optional<Administrator> administrator = administratorRepository.getByLogin(login);
 
         if (administrator.isEmpty()) {
-            throw new NotFoundException("Administrator with given id does not exists");
+            throw new NotFoundException("Administrator with given login does not exists");
         }
 
         return administrator.get();

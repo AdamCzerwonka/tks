@@ -26,7 +26,7 @@ public class ManagerRepositoryAdapter implements ManagerPort {
 
     @Override
     public List<Manager> findManagersByLogin(String login) {
-        List<ManagerEnt> result = managerRepository.findManagersByLogin(login);
+        List<ManagerEnt> result = managerRepository.findAllByLogin(login);
         return result.stream().map(ManagerEnt::toManager).toList();
     }
 

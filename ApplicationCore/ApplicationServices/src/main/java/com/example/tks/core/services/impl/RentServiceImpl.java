@@ -4,7 +4,7 @@ package com.example.tks.core.services.impl;
 import com.example.tks.core.domain.exceptions.*;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;
-import com.example.tks.core.services.RentService;
+import com.example.tks.core.services.interfaces.RentService;
 import com.example.tks.ports.infrastructure.ClientPort;
 import com.example.tks.ports.infrastructure.RealEstatePort;
 import com.example.tks.ports.infrastructure.RentPort;

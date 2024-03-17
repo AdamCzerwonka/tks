@@ -1,5 +1,7 @@
 package com.example.tks.ports.driving;
 
+import com.example.tks.core.domain.model.User;
+
 import java.util.List;
 import java.util.UUID;
 

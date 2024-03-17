@@ -1,14 +1,17 @@
 package com.example.tks.ports.userinterface;
 
+import com.example.tks.core.domain.exceptions.NotFoundException;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public interface UserServicePort<T> {
+public interface UserServicePort<T, U> {
     List<T> getAll(String filter);
 
-    T getById(UUID id);
+    T getById(UUID id) throws NotFoundException;
 
-    T updatePassword(String login, String oldPassword, String newPassword);
+    T getByLogin(String login) throws NotFoundException;
 
-    T getByLogin(String login);
+    T updatePassword(String login, U rentUpdatePasswordRequest) throws NotFoundException;
 }

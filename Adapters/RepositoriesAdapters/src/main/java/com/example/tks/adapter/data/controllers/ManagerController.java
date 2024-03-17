@@ -1,12 +1,13 @@
 package com.example.tks.adapter.data.controllers;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
+
 import com.example.pasik.managers.ManagerManager;
 import com.example.tks.app.web.jws.Jws;
 import com.example.tks.app.web.model.dto.Manager.ManagerCreateRequest;
 import com.example.tks.app.web.model.dto.Manager.ManagerUpdateRequest;
 import com.example.tks.app.web.model.dto.User.UserResponse;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;

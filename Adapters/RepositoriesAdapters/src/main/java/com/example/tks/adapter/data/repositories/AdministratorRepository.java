@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface AdministratorRepository {
     List<AdministratorEnt> get();
 
-    List<AdministratorEnt> findAdministratorsByLogin(String login);
+    List<AdministratorEnt> findAllByLogin(String login);
 
     Optional<AdministratorEnt> getById(UUID id);
 

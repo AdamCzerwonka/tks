@@ -3,7 +3,7 @@ package com.example.tks.core.services.impl;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Client;
-import com.example.tks.core.services.ClientService;
+import com.example.tks.core.services.interfaces.ClientService;
 import com.example.tks.ports.infrastructure.ClientPort;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> findClientsByLogin(String login) {
+    public List<Client> findAllByLogin(String login) {
         return clientRepository.findClientsByLogin(login);
     }
 
@@ -45,7 +45,7 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> client = clientRepository.getByLogin(login);
 
         if (client.isEmpty()) {
-            throw new NotFoundException("Client with given id does not exists");
+            throw new NotFoundException("Client with given login does not exists");
         }
 
         return client.get();

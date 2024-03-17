@@ -35,7 +35,7 @@ public class MongoManagerRepository implements ManagerRepository {
     }
 
     @Override
-    public List<ManagerEnt> findManagersByLogin(String login) {
+    public List<ManagerEnt> findAllByLogin(String login) {
         Pattern pattern = Pattern.compile(login, Pattern.CASE_INSENSITIVE);
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "manager"),

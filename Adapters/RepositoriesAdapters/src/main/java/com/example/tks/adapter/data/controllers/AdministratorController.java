@@ -1,12 +1,8 @@
 package com.example.tks.adapter.data.controllers;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.AdministratorManager;
-import com.example.tks.app.web.jws.Jws;
-import com.example.tks.app.web.model.dto.Administrator.AdministratorCreateRequest;
-import com.example.tks.app.web.model.dto.Administrator.AdministratorUpdateRequest;
-import com.example.tks.app.web.model.dto.User.UserResponse;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.services.interfaces.AdministratorService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -22,38 +18,38 @@ import java.util.UUID;
 @RequestMapping("/administrator")
 @RolesAllowed("ADMINISTRATOR")
 public class AdministratorController {
-    private final AdministratorManager administratorManager;
+    private final AdministratorService administratorService;
     private final Jws jws;
 
-    public AdministratorController(final AdministratorManager administratorManager, Jws jws) {
-        this.administratorManager = administratorManager;
+    public AdministratorController(final AdministratorService administratorService, Jws jws) {
+        this.administratorService = administratorService;
         this.jws = jws;
     }
 
     @GetMapping
     public ResponseEntity<?> get() {
-        var result = administratorManager.get().stream().map(UserResponse::fromUser).toList();
+        var result = administratorService.get().stream().map(UserResponse::fromUser).toList();
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
-        var result = administratorManager.getById(id);
+        var result = administratorService.getById(id);
 
         return ResponseEntity.ok(UserResponse.fromUser(result));
     }
 
     @GetMapping("/login/many/{login}")
     public ResponseEntity<?> findAdministratorsByLogin(@PathVariable String login) {
-        var result = administratorManager.findAdministratorsByLogin(login).stream().map(UserResponse::fromUser).toList();
+        var result = administratorService.findAllByLogin(login).stream().map(UserResponse::fromUser).toList();
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/login/single/{login}")
     public ResponseEntity<?> getByLogin(@PathVariable String login) throws NotFoundException {
-        var result = administratorManager.getByLogin(login);
+        var result = administratorService.getByLogin(login);
 
         return ResponseEntity.ok(UserResponse.fromUser(result));
     }
@@ -61,7 +57,7 @@ public class AdministratorController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody AdministratorCreateRequest request) throws URISyntaxException {
         try {
-            var result = administratorManager.create(request.ToAdministrator());
+            var result = administratorService.create(request.ToAdministrator());
 
             return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
         } catch (LoginAlreadyTakenException e) {
@@ -77,21 +73,21 @@ public class AdministratorController {
         if (!isOk) {
             return ResponseEntity.badRequest().build();
         }
-        var result = administratorManager.update(request.ToAdministrator());
+        var result = administratorService.update(request.ToAdministrator());
 
         return ResponseEntity.ok(UserResponse.fromUser(result));
     }
 
     @PostMapping("/activate/{id}")
     public ResponseEntity<?> activate(@PathVariable UUID id) throws NotFoundException {
-        administratorManager.setActiveStatus(id, true);
+        administratorService.setActiveStatus(id, true);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/deactivate/{id}")
     public ResponseEntity<?> deactivate(@PathVariable UUID id) throws NotFoundException {
-        administratorManager.setActiveStatus(id, false);
+        administratorService.setActiveStatus(id, false);
 
         return ResponseEntity.ok().build();
 

@@ -1,5 +1,9 @@
 package com.example.tks.ports.driving;
 
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.model.Manager;
+
 import java.util.List;
 import java.util.UUID;
 

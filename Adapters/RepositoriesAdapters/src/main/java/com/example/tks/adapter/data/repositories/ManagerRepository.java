@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface ManagerRepository {
     List<ManagerEnt> get();
 
-    List<ManagerEnt> findManagersByLogin(String login);
+    List<ManagerEnt> findAllByLogin(String login);
 
     Optional<ManagerEnt> getById(UUID id);
 

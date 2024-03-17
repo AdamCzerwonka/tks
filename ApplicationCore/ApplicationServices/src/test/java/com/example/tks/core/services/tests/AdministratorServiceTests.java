@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ public class AdministratorServiceTests {
 
     @Mock
     private AdministratorPort administratorPort;
+
+    @Mock
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     List<Administrator> admins;
 
     @BeforeEach

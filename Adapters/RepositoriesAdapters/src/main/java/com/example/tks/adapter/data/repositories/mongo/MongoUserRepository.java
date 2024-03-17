@@ -68,6 +68,6 @@ public class MongoUserRepository implements UserRepository {
         );
         collection.updateOne(filters, updates);
 
-        return getByLogin(login);
+        return getByLogin(login).orElseThrow();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.tks.adapter.data.repositories.mongo;
 
 import com.example.tks.adapter.data.model.ManagerEnt;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -22,13 +23,13 @@ public class UserRepositoryAdapter implements UserPort {
     }
 
     @Override
-    public User getById(UUID id) {
-        return userRepository.getById(id).toUser();
+    public Optional<User> getById(UUID id) {
+        return userRepository.getById(id).map(UserEnt::toUser);
     }
 
     @Override
-    public User getByLogin(String login) {
-        return userRepository.getByLogin(login).toUser();
+    public Optional<User> getByLogin(String login) {
+        return userRepository.getByLogin(login).map(UserEnt::toUser);
     }
 
     @Override

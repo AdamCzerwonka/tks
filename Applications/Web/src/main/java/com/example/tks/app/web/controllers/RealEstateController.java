@@ -1,6 +1,7 @@
 package com.example.tks.app.web.controllers;
 
 import com.example.tks.app.web.model.dto.RealEstate.RealEstateRequest;
+import com.example.tks.app.web.model.dto.RealEstate.RealEstateResponse;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.exceptions.RealEstateRentedException;
 import com.example.tks.core.domain.model.RealEstate;
@@ -24,23 +25,22 @@ public class RealEstateController {
     private final RealEstateService realEstateService;
     private final RentService rentService;
 
-
     @PostMapping
-    public ResponseEntity<RealEstate> create(@Valid @RequestBody RealEstateRequest request) throws URISyntaxException {
+    public ResponseEntity<RealEstateResponse> create(@Valid @RequestBody RealEstateRequest request) throws URISyntaxException {
         var result = realEstateService.create(request.toRealEstate());
-        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(result);
+        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(RealEstateResponse.fromRealEstate(result));
     }
 
     @GetMapping
-    public ResponseEntity<List<RealEstate>> get() {
-        return ResponseEntity.ok(realEstateService.get());
+    public ResponseEntity<List<RealEstateResponse>> get() {
+        return ResponseEntity.ok(realEstateService.get().stream().map(RealEstateResponse::fromRealEstate).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<RealEstateResponse> getById(@PathVariable UUID id) throws NotFoundException {
         RealEstate result = realEstateService.getById(id);
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(RealEstateResponse.fromRealEstate(result));
     }
 
     @GetMapping("/{id}/rents")
@@ -60,12 +60,12 @@ public class RealEstateController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<RealEstateResponse> update(
             @PathVariable UUID id,
             @RequestBody @Valid RealEstateRequest request) {
         RealEstate realEstate = request.toRealEstate();
         realEstate.setId(id);
         RealEstate result = realEstateService.update(realEstate);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(RealEstateResponse.fromRealEstate(result));
     }
 }

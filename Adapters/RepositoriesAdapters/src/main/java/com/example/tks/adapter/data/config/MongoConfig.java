@@ -1,4 +1,4 @@
-package com.example.tks.app.web.config;
+package com.example.tks.adapter.data.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

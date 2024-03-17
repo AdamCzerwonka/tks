@@ -1,6 +1,6 @@
 package com.example.tks.app.web.seeder;
 
-import com.example.tks.app.web.config.MongoClientConfiguration;
+import com.example.tks.adapter.data.config.MongoClientConfiguration;
 import com.example.tks.core.domain.model.Administrator;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.domain.model.Rent;

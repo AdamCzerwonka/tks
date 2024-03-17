@@ -11,7 +11,7 @@ import com.example.tks.ports.userinterface.RealEstateServicePort;
 import java.util.List;
 import java.util.UUID;
 
-public class RealEstateServiceAdapter implements RealEstateServicePort<RealEstateResponse, RealEstateRequest> {
+public class RealEstateServiceAdapter implements RealEstateServicePort<RealEstateResponse, RealEstateRequest, RealEstateRequest> {
     private final RealEstateService service;
 
     public RealEstateServiceAdapter(RealEstateService service) {

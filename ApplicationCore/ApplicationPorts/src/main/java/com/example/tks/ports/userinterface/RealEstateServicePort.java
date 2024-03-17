@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RealEstateServicePort<T, R> {
+public interface RealEstateServicePort<T, C, U> {
     List<T> get();
 
     T getById(UUID id) throws NotFoundException;
 
-    T create(R realEstateRequest);
+    T create(C realEstateRequest);
 
-    T update(R realEstateRequest);
+    T update(U realEstateRequest);
 
     void delete(UUID id) throws RealEstateRentedException;
 }

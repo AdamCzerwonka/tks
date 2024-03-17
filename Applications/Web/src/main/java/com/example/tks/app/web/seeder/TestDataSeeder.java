@@ -1,8 +1,12 @@
 package com.example.tks.app.web.seeder;
 
-import com.example.pasik.managers.ClientManager;
-import com.example.pasik.managers.RealEstateManager;
-import com.example.pasik.managers.RentManager;
+import com.example.tks.core.domain.model.Client;
+import com.example.tks.core.domain.model.RealEstate;
+import com.example.tks.core.domain.model.Rent;
+import com.example.tks.core.services.interfaces.ClientService;
+import com.example.tks.core.services.interfaces.RealEstateService;
+import com.example.tks.core.services.interfaces.RentService;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -15,20 +19,15 @@ import java.util.List;
 
 @Component
 @Profile("test")
+@AllArgsConstructor
 public class TestDataSeeder {
-    private final RealEstateManager realEstateManager;
-    private final RentManager rentManager;
-    private final ClientManager clientManager;
+    private final RealEstateService realEstateService;
+    private final RentService rentService;
+    private final ClientService clientService;
 
     private static final List<RealEstate> realEstates = new ArrayList<>();
     private static final List<Rent> rents = new ArrayList<>();
     private static final List<Client> clients = new ArrayList<>();
-
-    public TestDataSeeder(final RealEstateManager realEstateManager, final RentManager rentManager, final ClientManager clientManager) {
-        this.realEstateManager = realEstateManager;
-        this.rentManager = rentManager;
-        this.clientManager = clientManager;
-    }
 
     @Bean
     public CommandLineRunner initTestData() {
@@ -38,25 +37,25 @@ public class TestDataSeeder {
 
         return args -> {
             Client testClient = new Client(null, "firstName", "lastName", "login", true, "test123");
-            testClient = clientManager.create(testClient);
+            testClient = clientService.create(testClient);
             Client testClient2 = new Client(null, "firstName2", "lastName2", "login2", true, "test123");
-            testClient2 = clientManager.create(testClient2);
+            testClient2 = clientService.create(testClient2);
             Client inactiveClient = new Client(null, "firstNameInactive", "lastNameInactive", "loginInactive", false, "test123");
-            inactiveClient = clientManager.create(inactiveClient);
+            inactiveClient = clientService.create(inactiveClient);
 
             clients.add(testClient);
             clients.add(testClient2);
             clients.add(inactiveClient);
 
-            RealEstate testRealEstate = new RealEstate(null,"name", "address", 15, 15);
-            testRealEstate = realEstateManager.create(testRealEstate);
-            RealEstate testRealEstate2 = new RealEstate(null,"name2", "address2", 21, 21);
-            testRealEstate2 = realEstateManager.create(testRealEstate2);
+            RealEstate testRealEstate = new RealEstate(null, "name", "address", 15, 15);
+            testRealEstate = realEstateService.create(testRealEstate);
+            RealEstate testRealEstate2 = new RealEstate(null, "name2", "address2", 21, 21);
+            testRealEstate2 = realEstateService.create(testRealEstate2);
 
             realEstates.add(testRealEstate);
             realEstates.add(testRealEstate2);
 
-            Rent rent = rentManager.create(testClient.getId(), testRealEstate.getId(), LocalDate.now());
+            Rent rent = rentService.create(testClient.getId(), testRealEstate.getId(), LocalDate.now());
 
             rents.add(rent);
         };

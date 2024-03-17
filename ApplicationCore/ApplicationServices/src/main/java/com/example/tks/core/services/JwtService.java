@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -39,8 +40,8 @@ public class JwtService {
     public Authentication validateToken(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret_key)).build();
         DecodedJWT decodedJWT = verifier.verify(token);
-        User user = userRepository.getByLogin(decodedJWT.getSubject());
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority(user.getRole().toUpperCase())));
+        Optional<User> user = userRepository.getByLogin(decodedJWT.getSubject());
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority(user.get().getRole().toUpperCase())));
     }
 
     public String getUserLogin(String token) {

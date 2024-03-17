@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
-import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.exceptions.*;
 import com.example.tks.core.domain.model.Administrator;
 
 public interface AdministratorPort {

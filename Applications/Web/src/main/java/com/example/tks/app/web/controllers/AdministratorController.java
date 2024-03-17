@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController()
@@ -28,14 +29,14 @@ public class AdministratorController {
     private final Jws jws;
 
     @GetMapping
-    public ResponseEntity<?> get() {
+    public ResponseEntity<List<UserResponse>> get() {
         var result = administratorService.get().stream().map(UserResponse::fromUser).toList();
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<UserResponse> getById(@PathVariable UUID id) throws NotFoundException {
         var result = administratorService.getById(id);
 
         return ResponseEntity.ok(UserResponse.fromUser(result));

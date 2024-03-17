@@ -38,14 +38,14 @@ public class ClientController {
 
     @GetMapping
     @RolesAllowed("ADMINISTRATOR")
-    public ResponseEntity<?> get() {
+    public ResponseEntity<List<UserResponse>> get() {
         var result = clientService.get().stream().map(UserResponse::fromUser).toList();
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException, JOSEException {
+    public ResponseEntity<UserResponse> getById(@PathVariable UUID id) throws NotFoundException, JOSEException {
         var result = clientService.getById(id);
         var signed = jws.sign(result.getId().toString());
 
@@ -58,28 +58,28 @@ public class ClientController {
     }
 
     @GetMapping("/login/many/{login}")
-    public ResponseEntity<?> findClientsByLogin(@PathVariable String login) {
+    public ResponseEntity<List<UserResponse>> findClientsByLogin(@PathVariable String login) {
         var result = clientService.findAllByLogin(login).stream().map(UserResponse::fromUser).toList();
 
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/login/single/{login}")
-    public ResponseEntity<?> getByLogin(@PathVariable String login) throws NotFoundException {
+    public ResponseEntity<UserResponse> getByLogin(@PathVariable String login) throws NotFoundException {
         var result = clientService.getByLogin(login);
 
         return ResponseEntity.ok(UserResponse.fromUser(result));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody ClientCreateRequest request) throws URISyntaxException, LoginAlreadyTakenException {
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody ClientCreateRequest request) throws URISyntaxException, LoginAlreadyTakenException {
         var result = clientService.create(request.ToClient());
 
         return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
     }
 
     @PutMapping
-    public ResponseEntity<?> update(
+    public ResponseEntity<UserResponse> update(
             @RequestHeader(HttpHeaders.IF_MATCH) String token,
             @Valid @RequestBody ClientUpdateRequest request) throws NotFoundException {
         var isOk = jws.verifySign(token, request.getId());

@@ -7,10 +7,11 @@
     <modules>
         <module>DomainModel</module>
         <module>ApplicationServices</module>
+        <module>ApplicationPorts</module>
     </modules>
     <parent>
         <artifactId>tks</artifactId>
-        <groupId>org.example</groupId>
+        <groupId>com.example</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 </project>

@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.Client;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -18,6 +19,22 @@ public class ClientEnt extends UserEnt {
                      @BsonProperty("role") String role,
                      @BsonProperty(PASSWORD) String password) {
         super(id, firstName, lastName, login, active, role, password);
+    }
+
+    public static ClientEnt toClientEnt(Client client) {
+        return new ClientEnt(
+                client.getId(), client.getFirstName(), client.getLastName(), client.getLogin(), client.getActive(), client.getRole(), client.getPassword());
+    }
+
+    public Client toClient() {
+        return new Client(
+                getId(),
+                getFirstName(),
+                getLastName(),
+                getLogin(),
+                getActive(),
+                getPassword()
+        );
     }
 
     public final static String ID = "_id";

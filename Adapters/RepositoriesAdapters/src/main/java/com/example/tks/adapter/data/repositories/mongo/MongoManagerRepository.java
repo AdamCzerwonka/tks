@@ -1,6 +1,8 @@
 package com.example.tks.adapter.data.repositories.mongo;
 
 import com.example.tks.adapter.data.model.ManagerEnt;
+import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -35,7 +37,7 @@ public class MongoManagerRepository implements ManagerRepository {
     }
 
     @Override
-    public List<ManagerEnt> findManagersByLogin(String login) {
+    public List<ManagerEnt> findAllByLogin(String login) {
         Pattern pattern = Pattern.compile(login, Pattern.CASE_INSENSITIVE);
         Bson filters = Filters.and(
                 Filters.eq("_clazz", "manager"),

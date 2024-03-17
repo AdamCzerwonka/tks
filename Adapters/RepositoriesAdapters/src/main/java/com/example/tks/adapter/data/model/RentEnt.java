@@ -1,5 +1,6 @@
 package com.example.tks.adapter.data.model;
 
+import com.example.tks.core.domain.model.Rent;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -21,6 +22,24 @@ public class RentEnt {
         this.realEstate = realEstate;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Rent toRent() {
+        return new Rent(
+                getId(),
+                getClient().toClient(),
+                getRealEstate().toRealEstate(),
+                getStartDate(),
+                getEndDate());
+    }
+
+    static public RentEnt toRentEnt(Rent rent) {
+        return new RentEnt(
+                rent.getId(),
+                ClientEnt.toClientEnt(rent.getClient()),
+                RealEstateEnt.toRealEstateEnt(rent.getRealEstate()),
+                rent.getStartDate(),
+                rent.getEndDate());
     }
 
     @BsonId

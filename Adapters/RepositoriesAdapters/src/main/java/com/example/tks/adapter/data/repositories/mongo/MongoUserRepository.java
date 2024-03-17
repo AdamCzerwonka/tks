@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -34,15 +35,27 @@ public class MongoUserRepository implements UserRepository {
     }
 
     @Override
-    public UserEnt getById(UUID id) {
+    public Optional<UserEnt> getById(UUID id) {
         Bson filter = Filters.eq("_id", id);
-        return collection.find(filter).first();
+        var result = collection.find(filter).first();
+
+        if (result == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(result);
     }
 
     @Override
-    public UserEnt getByLogin(String login) {
+    public Optional<UserEnt> getByLogin(String login) {
         Bson filter = Filters.eq("login", login);
-        return collection.find(filter).first();
+        var result = collection.find(filter).first();
+
+        if (result == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(result);
     }
 
     @Override
@@ -55,6 +68,6 @@ public class MongoUserRepository implements UserRepository {
         );
         collection.updateOne(filters, updates);
 
-        return getByLogin(login);
+        return getByLogin(login).orElseThrow();
     }
 }

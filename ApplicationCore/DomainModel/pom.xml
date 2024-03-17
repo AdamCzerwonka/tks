@@ -6,7 +6,7 @@
     <artifactId>DomainModel</artifactId>
 
     <parent>
-        <groupId>org.example</groupId>
+        <groupId>com.example</groupId>
         <artifactId>ApplicationCore</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>

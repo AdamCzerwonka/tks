@@ -4,6 +4,7 @@ import com.example.tks.adapter.rest.aggregates.RealEstateServiceAdapter;
 import com.example.tks.adapter.rest.aggregates.RentServiceAdapter;
 import com.example.tks.adapter.rest.model.RealEstate.RealEstateRequest;
 import com.example.tks.adapter.rest.model.RealEstate.RealEstateResponse;
+import com.example.tks.adapter.rest.model.Rent.RentResponse;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +39,12 @@ public class RealEstateController {
     }
 
     @GetMapping("/{id}/rents")
-    public ResponseEntity<List<Rent>> getRents(@PathVariable UUID id, @RequestParam(defaultValue = "true") boolean current) {
+    public ResponseEntity<List<RentResponse>> getRents(@PathVariable UUID id, @RequestParam(defaultValue = "true") boolean current) {
         return ResponseEntity.ok(rentServiceAdapter.getByRealEstateId(id, current));
     }
 
     @PostMapping
-    public ResponseEntity<RealEstate> create(@Valid @RequestBody RealEstateRequest request) throws URISyntaxException {
+    public ResponseEntity<?> create(@Valid @RequestBody RealEstateRequest request) throws URISyntaxException {
         var result = realEstateServicePort.create(request);
         return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(result);
     }
@@ -52,19 +53,15 @@ public class RealEstateController {
     public ResponseEntity<?> update(
             @PathVariable UUID id,
             @RequestBody @Valid RealEstateRequest request) {
-        realEstate.setId(id);
-        RealEstate result = realEstateManager.update(request);
+        request.setId(id);
+        RealEstateResponse result = realEstateServicePort.update(request);
         return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
-        try {
-            realEstateServicePort.delete(id);
-        } catch (RealEstateRentedException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        realEstateServicePort.delete(id);
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 }

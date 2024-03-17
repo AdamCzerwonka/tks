@@ -1,11 +1,10 @@
 package com.example.tks.adapter.rest.controllers;
 
-import com.example.pasik.exceptions.*;
-import com.example.pasik.managers.RentManager;
-import com.example.pasik.managers.UserManager;
-import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
-import com.example.tks.app.web.model.dto.Rent.RentForUserCreateRequest;
-import com.example.tks.app.web.model.dto.Rent.RentResponse;
+
+import com.example.tks.adapter.rest.aggregates.RentServiceAdapter;
+import com.example.tks.adapter.rest.aggregates.UserServiceAdapter;
+import com.example.tks.adapter.rest.model.Rent.RentCreateRequest;
+import com.example.tks.adapter.rest.model.Rent.RentResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/rent")
 public class RentController {
-    private final RentManager rentManager;
+    private final RentServiceAdapter rentManager;
     private final JwtUtil jwtUtil;
-    private final UserManager userManager;
+    private final UserServiceAdapter userManager;
 
     private User getUserFromComplexToken(String complexToken) {
         String token = complexToken.replace("Bearer ", "");
@@ -69,20 +68,16 @@ public class RentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
-        Rent result = rentManager.getById(id);
+        RentResponse result = rentManager.getById(id);
 
-        return ResponseEntity.ok(RentResponse.fromRent(result));
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
-        try {
-            rentManager.delete(id);
+        rentManager.delete(id);
 
-            return ResponseEntity.ok("Deleted");
-        } catch (RentEndedException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        return ResponseEntity.ok().build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

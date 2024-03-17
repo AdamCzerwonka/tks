@@ -8,11 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class RealEstateRequest {
+    private UUID id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @NotBlank(message = "Address cannot be empty")

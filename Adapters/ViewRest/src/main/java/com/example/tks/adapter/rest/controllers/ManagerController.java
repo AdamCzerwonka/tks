@@ -1,12 +1,9 @@
 package com.example.tks.adapter.rest.controllers;
 
-import com.example.pasik.exceptions.LoginAlreadyTakenException;
-import com.example.pasik.exceptions.NotFoundException;
-import com.example.pasik.managers.ManagerManager;
-import com.example.tks.app.web.jws.Jws;
-import com.example.tks.app.web.model.dto.Manager.ManagerCreateRequest;
-import com.example.tks.app.web.model.dto.Manager.ManagerUpdateRequest;
-import com.example.tks.app.web.model.dto.User.UserResponse;
+import com.example.tks.adapter.rest.aggregates.ManagerServiceAdapter;
+import com.example.tks.adapter.rest.model.Manager.ManagerCreateRequest;
+import com.example.tks.adapter.rest.model.Manager.ManagerUpdateRequest;
+import com.example.tks.core.domain.exceptions.NotFoundException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -21,10 +18,10 @@ import java.util.UUID;
 @RestController()
 @RequestMapping("/manager")
 public class ManagerController {
-    private final ManagerManager managerManager;
+    private final ManagerServiceAdapter managerManager;
     private final Jws jws;
 
-    public ManagerController(final ManagerManager managerManager, Jws jws) {
+    public ManagerController(final ManagerServiceAdapter managerManager, Jws jws) {
         this.managerManager = managerManager;
         this.jws = jws;
     }
@@ -32,7 +29,7 @@ public class ManagerController {
     @GetMapping
     @RolesAllowed("ADMINISTRATOR")
     public ResponseEntity<?> get() {
-        var result = managerManager.get().stream().map(UserResponse::fromUser).toList();
+        var result = managerManager.get();
 
         return ResponseEntity.ok(result);
     }
@@ -41,12 +38,12 @@ public class ManagerController {
     public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
         var result = managerManager.getById(id);
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/login/many/{login}")
     public ResponseEntity<?> findClientsByLogin(@PathVariable String login) {
-        var result = managerManager.findManagersByLogin(login).stream().map(UserResponse::fromUser).toList();
+        var result = managerManager.findAllByLogin(login);
 
         return ResponseEntity.ok(result);
     }
@@ -55,15 +52,15 @@ public class ManagerController {
     public ResponseEntity<?> getByLogin(@PathVariable String login) throws NotFoundException {
         var result = managerManager.getByLogin(login);
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody ManagerCreateRequest request) throws URISyntaxException {
         try {
-            var result = managerManager.create(request.ToManager());
+            var result = managerManager.create(request);
 
-            return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
+            return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(result);
         } catch (LoginAlreadyTakenException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -77,9 +74,9 @@ public class ManagerController {
         if (!isOk) {
             return ResponseEntity.badRequest().build();
         }
-        var result = managerManager.update(request.ToManager());
+        var result = managerManager.update(request);
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/activate/{id}")

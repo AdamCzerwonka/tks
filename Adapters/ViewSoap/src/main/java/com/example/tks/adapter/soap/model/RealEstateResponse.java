@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "getRealEstateResponse", namespace = "http://www.example.com/tks/soap")
-@XmlType
+@XmlType(name = "")
 public class RealEstateResponse {
     @XmlElement
     private RealEstateSoap realEstate;

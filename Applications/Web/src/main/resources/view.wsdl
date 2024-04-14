@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://www.example.com/tks/soap" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.com/tks/soap" targetNamespace="http://www.example.com/tks/soap">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.com/tks/soap" version="1.0">
+    
+  <xs:element name="createRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="name" type="xs:string"/>
+                
+        <xs:element minOccurs="0" name="address" type="xs:string"/>
+                
+        <xs:element name="area" type="xs:double"/>
+                
+        <xs:element name="price" type="xs:double"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="createRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="realEstate" type="tns:realEstateSoap"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="deleteRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="deleteRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element name="success" type="xs:boolean"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="getRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="getRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="realEstate" type="tns:realEstateSoap"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="getRealEstatesResponse" nillable="true" type="xs:anyType"/>
+    
+  <xs:element name="updateRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="name" type="xs:string"/>
+                
+        <xs:element minOccurs="0" name="address" type="xs:string"/>
+                
+        <xs:element name="area" type="xs:double"/>
+                
+        <xs:element name="price" type="xs:double"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="updateRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="realEstate" type="tns:realEstateSoap"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:complexType name="realEstateSoap">
+        
+    <xs:sequence>
+            
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+            
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+            
+      <xs:element minOccurs="0" name="address" type="xs:string"/>
+            
+      <xs:element name="area" type="xs:double"/>
+            
+      <xs:element name="price" type="xs:double"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+  
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createRealEstateResponse">
+    <wsdl:part element="tns:createRealEstateResponse" name="createRealEstateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteRealEstateRequest">
+    <wsdl:part element="tns:deleteRealEstateRequest" name="deleteRealEstateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createRealEstateRequest">
+    <wsdl:part element="tns:createRealEstateRequest" name="createRealEstateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRealEstateRequest">
+    <wsdl:part element="tns:getRealEstateRequest" name="getRealEstateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateRealEstateRequest">
+    <wsdl:part element="tns:updateRealEstateRequest" name="updateRealEstateRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteRealEstateResponse">
+    <wsdl:part element="tns:deleteRealEstateResponse" name="deleteRealEstateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRealEstateResponse">
+    <wsdl:part element="tns:getRealEstateResponse" name="getRealEstateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRealEstatesResponse">
+    <wsdl:part element="tns:getRealEstatesResponse" name="getRealEstatesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateRealEstateResponse">
+    <wsdl:part element="tns:updateRealEstateResponse" name="updateRealEstateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="RealEstatePort" >
+    <wsdl:operation name="createRealEstate">
+      <wsdl:input message="tns:createRealEstateRequest" name="createRealEstateRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:createRealEstateResponse" name="createRealEstateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteRealEstate">
+      <wsdl:input message="tns:deleteRealEstateRequest" name="deleteRealEstateRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteRealEstateResponse" name="deleteRealEstateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRealEstate">
+      <wsdl:input message="tns:getRealEstateRequest" name="getRealEstateRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getRealEstateResponse" name="getRealEstateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateRealEstate">
+      <wsdl:input message="tns:updateRealEstateRequest" name="updateRealEstateRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:updateRealEstateResponse" name="updateRealEstateResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRealEstates">
+      <wsdl:output message="tns:getRealEstatesResponse" name="getRealEstatesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RealEstatePortSoap11" type="tns:RealEstatePort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createRealEstate">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="createRealEstateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createRealEstateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteRealEstate">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="deleteRealEstateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteRealEstateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRealEstate">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getRealEstateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRealEstateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateRealEstate">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="updateRealEstateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateRealEstateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getRealEstates">
+      <soap:operation soapAction=""/>
+      <wsdl:output name="getRealEstatesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RealEstatePortService">
+    <wsdl:port binding="tns:RealEstatePortSoap11" name="RealEstatePortSoap11">
+      <soap:address location="http://localhost:443/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

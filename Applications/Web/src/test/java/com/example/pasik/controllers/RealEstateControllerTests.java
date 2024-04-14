@@ -1,8 +1,8 @@
 package com.example.pasik.controllers;
 
-import com.example.tks.app.web.model.dto.Client.ClientCreateRequest;
-import com.example.tks.app.web.model.dto.RealEstate.RealEstateRequest;
-import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
+import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
+import com.example.tks.adapter.rest.model.dto.real_estate.RealEstateRequest;
+import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
@@ -20,9 +20,9 @@ import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.example.tks.app.web.PasikApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class RealEstateControllerTests {
+class RealEstateControllerTests extends ControllerTests {
     private final static String BASE_URI = "http://localhost";
     private static RealEstateRequest realEstate1;
     private static RealEstateRequest realEstate2;
@@ -57,7 +57,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testCreateShouldSuccessWhenPassingCorrectData() {
+    void testCreateShouldSuccessWhenPassingCorrectData() {
         given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -70,7 +70,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testCreateShouldFailWhenPassingIncorrectData() {
+    void testCreateShouldFailWhenPassingIncorrectData() {
         var incorrectRealEstate = RealEstateRequest.builder().name("").address("atest").price(-10).build();
 
         given()
@@ -84,7 +84,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testGetAllShouldReturnAllExistingRealEstates() {
+    void testGetAllShouldReturnAllExistingRealEstates() {
         given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -111,7 +111,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldReturnRealEstateWhenPassingCorrectId() {
+    void testGetByIdShouldReturnRealEstateWhenPassingCorrectId() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -134,7 +134,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldFailWhenPassingNonExistingId() {
+    void testGetByIdShouldFailWhenPassingNonExistingId() {
         given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", UUID.randomUUID())
@@ -146,7 +146,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testDeleteShouldSuccessWhenRealEstateDoesNotHaveOpenedRents() {
+    void testDeleteShouldSuccessWhenRealEstateDoesNotHaveOpenedRents() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -176,7 +176,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testDeleteShouldFailWhenRealEstateHaveOpenedRent() {
+    void testDeleteShouldFailWhenRealEstateHaveOpenedRent() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -193,6 +193,7 @@ public class RealEstateControllerTests {
                 .firstName("test")
                 .lastName("Test")
                 .login("test")
+                .password("test")
                 .active(true)
                 .build();
 
@@ -233,7 +234,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testUpdateShouldSuccessWhenGivenCorrectData() {
+    void testUpdateShouldSuccessWhenGivenCorrectData() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -263,7 +264,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testUpdateShouldFailWhenGivenInvalidData() {
+    void testUpdateShouldFailWhenGivenInvalidData() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -294,7 +295,7 @@ public class RealEstateControllerTests {
     }
 
     @Test
-    public void testGetRentsShouldReturnCorrectAmountOfRents() {
+    void testGetRentsShouldReturnCorrectAmountOfRents() {
         String realEstateId = given()
                 .contentType(ContentType.JSON)
                 .body(realEstate1)
@@ -322,6 +323,7 @@ public class RealEstateControllerTests {
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 

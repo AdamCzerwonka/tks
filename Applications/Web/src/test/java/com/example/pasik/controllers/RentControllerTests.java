@@ -1,6 +1,6 @@
 package com.example.pasik.controllers;
 
-import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
+import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import com.example.tks.app.web.seeder.TestDataSeeder;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;
@@ -22,10 +22,10 @@ import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.example.tks.app.web.PasikApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
-public class RentControllerTests {
+public class RentControllerTests extends ControllerTests {
     private final static String BASE_URI = "http://localhost/rent";
 
     @LocalServerPort

@@ -41,14 +41,6 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers(mvc.pattern("/**")).permitAll();
-//                    requests.requestMatchers(mvc.pattern("/auth/**")).permitAll();
-//                    requests.requestMatchers(mvc.pattern("/realestate/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/user/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/client/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/manager/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/rent/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/administrator/**")).authenticated();
-//                    requests.requestMatchers(mvc.pattern("/view.xsd/**")).permitAll();
                 });
 
         return http.build();

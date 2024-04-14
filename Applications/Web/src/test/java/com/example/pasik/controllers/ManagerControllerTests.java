@@ -1,7 +1,7 @@
 package com.example.pasik.controllers;
 
-import com.example.tks.app.web.model.dto.Manager.ManagerCreateRequest;
-import com.example.tks.app.web.model.dto.Manager.ManagerUpdateRequest;
+import com.example.tks.adapter.rest.model.dto.manager.ManagerCreateRequest;
+import com.example.tks.adapter.rest.model.dto.manager.ManagerUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.JSONException;
@@ -17,9 +17,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.example.tks.app.web.PasikApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ManagerControllerTests {
+class ManagerControllerTests extends ControllerTests {
     private final static String BASE_URI = "http://localhost";
     private final static String ENDPOINT = "/manager";
 
@@ -33,14 +33,8 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testCreateShouldPassWhenAddingCorrectData() {
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+    void testCreateShouldPassWhenAddingCorrectData() {
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         given()
                 .contentType(ContentType.JSON)
@@ -54,7 +48,7 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testCreateShouldFailWhenAddingIncorrectData() {
+    void testCreateShouldFailWhenAddingIncorrectData() {
         ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
                 .builder()
                 .firstName("")
@@ -74,12 +68,13 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testCreateShouldFailWhenDuplicatingLogin() {
+    void testCreateShouldFailWhenDuplicatingLogin() {
         ManagerCreateRequest managerCreateRequest1 = ManagerCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -88,6 +83,7 @@ public class ManagerControllerTests {
                 .firstName("TestFirstName2")
                 .lastName("TestLastName2")
                 .login("testLogin1")
+                .password("testPassword2")
                 .active(false)
                 .build();
 
@@ -102,7 +98,7 @@ public class ManagerControllerTests {
 
         given()
                 .contentType(ContentType.JSON)
-                .body(managerCreateRequest1)
+                .body(managerCreateRequest2)
                 .when()
                 .post()
                 .then()
@@ -111,7 +107,7 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testGetShouldReturnCorrectAmountOfData() {
+    void testGetShouldReturnCorrectAmountOfData() {
         given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -121,13 +117,7 @@ public class ManagerControllerTests {
                 .statusCode(200)
                 .body("size()", equalTo(0));
 
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         given()
                 .contentType(ContentType.JSON)
@@ -149,14 +139,8 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldReturnCorrectData() {
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+    void testGetByIdShouldReturnCorrectData() {
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         String id = given()
                 .contentType(ContentType.JSON)
@@ -185,7 +169,7 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldFailWhenPassingRandomId() {
+    void testGetByIdShouldFailWhenPassingRandomId() {
         given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", UUID.randomUUID())
@@ -196,7 +180,7 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testFindManagersByLoginShouldReturnCorrectAmountOfData() {
+    void testFindManagersByLoginShouldReturnCorrectAmountOfData() {
         given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -206,13 +190,7 @@ public class ManagerControllerTests {
                 .statusCode(200)
                 .body("size()", equalTo(0));
 
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         given()
                 .contentType(ContentType.JSON)
@@ -234,14 +212,8 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testGetByLoginShouldReturnCorrectData() {
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+    void testGetByLoginShouldReturnCorrectData() {
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         String id = given()
                 .contentType(ContentType.JSON)
@@ -270,7 +242,7 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testGetByLoginShouldFailWhenPassingRandomLogin() {
+    void testGetByLoginShouldFailWhenPassingRandomLogin() {
         given()
                 .contentType(ContentType.JSON)
                 .get("/login/single/abc123")
@@ -280,12 +252,13 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testUpdateShouldPassWhenPassingCorrectData() {
+    void testUpdateShouldPassWhenPassingCorrectData() {
         ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -299,6 +272,18 @@ public class ManagerControllerTests {
                 .statusCode(201)
                 .extract()
                 .path("id");
+
+        String etag = given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", id)
+                .when()
+                .get("/{id}")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .header("Etag")
+                .transform(s -> s.replace("\"", ""));
 
         ManagerUpdateRequest managerUpdateRequest = ManagerUpdateRequest
                 .builder()
@@ -312,6 +297,7 @@ public class ManagerControllerTests {
         given()
                 .contentType(ContentType.JSON)
                 .body(managerUpdateRequest)
+                .header("If-Match", etag)
                 .when()
                 .put()
                 .then()
@@ -325,12 +311,13 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testUpdateShouldFailWhenPassingIncorrectData() throws JSONException {
+    void testUpdateShouldFailWhenPassingIncorrectData() throws JSONException {
         ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -345,6 +332,19 @@ public class ManagerControllerTests {
                 .extract()
                 .path("id");
 
+        String etag = given()
+                .contentType(ContentType.JSON)
+                .pathParam("id", id)
+                .when()
+                .get("/{id}")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .header("Etag")
+                .transform(s -> s.replace("\"", ""));
+
+
         ManagerUpdateRequest managerUpdateRequest = ManagerUpdateRequest
                 .builder()
                 .id(UUID.fromString(id))
@@ -357,6 +357,7 @@ public class ManagerControllerTests {
         given()
                 .contentType(ContentType.JSON)
                 .body(managerUpdateRequest)
+                .header("If-Match", etag)
                 .when()
                 .put()
                 .then()
@@ -365,12 +366,13 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testActivateShouldActiveDeactivatedAccount() {
+    void testActivateShouldActiveDeactivatedAccount() {
         ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(false)
                 .build();
 
@@ -406,14 +408,8 @@ public class ManagerControllerTests {
     }
 
     @Test
-    public void testDeactivateShouldDeactivateActivatedAccount() {
-        ManagerCreateRequest managerCreateRequest = ManagerCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+    void testDeactivateShouldDeactivateActivatedAccount() {
+        ManagerCreateRequest managerCreateRequest = getManagerCreateRequest();
 
         String id = given()
                 .contentType(ContentType.JSON)
@@ -444,5 +440,16 @@ public class ManagerControllerTests {
                 .statusCode(200)
                 .body("id", equalTo(id))
                 .body("active", equalTo(!managerCreateRequest.getActive()));
+    }
+
+    ManagerCreateRequest getManagerCreateRequest() {
+        return ManagerCreateRequest
+                .builder()
+                .firstName("TestFirstName1")
+                .lastName("TestLastName1")
+                .login("testLogin1")
+                .password("testPassword1")
+                .active(true)
+                .build();
     }
 }

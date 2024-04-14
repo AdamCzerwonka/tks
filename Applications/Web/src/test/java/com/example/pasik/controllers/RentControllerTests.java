@@ -2,6 +2,9 @@ package com.example.pasik.controllers;
 
 import com.example.tks.app.web.model.dto.Rent.RentCreateRequest;
 import com.example.tks.app.web.seeder.TestDataSeeder;
+import com.example.tks.core.domain.model.Client;
+import com.example.tks.core.domain.model.RealEstate;
+import com.example.tks.core.domain.model.Rent;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;

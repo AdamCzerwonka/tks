@@ -13,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.List;
 
@@ -26,20 +28,19 @@ public class SecurityConfig {
     private final JwtService jwtService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
                 .addFilterBefore(new JwtAuthFilter(jwtService), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> corsConfigurationSource())
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers("/auth/**").permitAll();
-                    requests.requestMatchers("/realestate/**").permitAll();
-                    requests.requestMatchers("/user/**").permitAll();
-                    requests.requestMatchers("/client/**").permitAll();
-                    requests.requestMatchers("/manager/**").permitAll();
-                    requests.requestMatchers("/rent/**").permitAll();
-                    requests.requestMatchers("/administrator/**").permitAll();
+                    requests.requestMatchers(mvc.pattern("/**")).permitAll();
                 });
 
         return http.build();

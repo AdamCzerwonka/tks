@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.example.com/tks/soap" version="1.0">
+    
+  <xs:import namespace="http://www.example.com/tks/soap" schemaLocation="schema1.xsd"/>
+    
+  <xs:complexType name="realEstateResponse">
+        
+    <xs:sequence>
+            
+      <xs:element minOccurs="0" name="realEstate" type="ns1:realEstateSoap"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+  
+</xs:schema>

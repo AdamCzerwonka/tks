@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>RepositoriesAdapters</module>
+        <module>ViewRest</module>
     </modules>
     <artifactId>Adapters</artifactId>
 

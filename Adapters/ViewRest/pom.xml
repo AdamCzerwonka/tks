@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.example</groupId>
-        <artifactId>Applications</artifactId>
+        <artifactId>Adapters</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Web</artifactId>
+    <artifactId>ViewRest</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -26,18 +26,6 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>ApplicationServices</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>RepositoriesAdapters</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>ViewRest</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

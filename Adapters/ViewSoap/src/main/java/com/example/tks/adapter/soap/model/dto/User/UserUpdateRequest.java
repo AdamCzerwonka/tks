@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(namespace = "http://www.example.com/tks/soap")
 public abstract class UserUpdateRequest {
     @NotNull
     private UUID id;

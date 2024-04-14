@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlType(namespace = "https://www.example.com/user")
+@XmlType(namespace = "http://www.example.com/tks/soap")
 public class LoginUserRequest {
     @XmlElement
     @NotBlank(message = "Login cannot be blank")

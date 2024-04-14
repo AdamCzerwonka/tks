@@ -29,7 +29,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("ViewPort");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.example.com/tks/view");
+        wsdl11Definition.setTargetNamespace("http://www.example.com/tks/soap");
         wsdl11Definition.setSchema(viewSchema);
         return wsdl11Definition;
     }

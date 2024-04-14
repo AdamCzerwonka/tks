@@ -27,7 +27,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     @Bean(name = "view")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema viewSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("ViewPort");
+        wsdl11Definition.setPortTypeName("RealEstatePort");
         wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace("http://www.example.com/tks/soap");
         wsdl11Definition.setSchema(viewSchema);
@@ -36,6 +36,6 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
     @Bean
     public XsdSchema viewSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("view.xsd"));
+        return new SimpleXsdSchema(new ClassPathResource("schema1.xsd"));
     }
 }

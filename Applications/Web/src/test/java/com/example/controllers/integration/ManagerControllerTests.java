@@ -1,5 +1,6 @@
-package com.example.pasik.controllers;
+package com.example.controllers.integration;
 
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.manager.ManagerCreateRequest;
 import com.example.tks.adapter.rest.model.dto.manager.ManagerUpdateRequest;
 import io.restassured.RestAssured;

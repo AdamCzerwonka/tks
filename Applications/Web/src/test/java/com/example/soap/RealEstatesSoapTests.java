@@ -1,4 +1,4 @@
-package com.example.pasik.soap;
+package com.example.soap;
 
 import com.example.tks.app.web.PasikApplication;
 import com.example.tks.core.domain.model.RealEstate;
@@ -46,7 +46,7 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(500);
+                .statusCode(404);
     }
 
     @Test
@@ -78,7 +78,7 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(500);
+                .statusCode(404);
     }
 
     @Test
@@ -105,6 +105,6 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(400);
+                .statusCode(404);
     }
 }

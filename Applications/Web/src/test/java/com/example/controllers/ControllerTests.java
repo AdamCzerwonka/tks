@@ -1,6 +1,6 @@
-package com.example.pasik.controllers;
+package com.example.controllers;
 
-import com.example.pasik.MongoDbContainer;
+import com.example.MongoDbContainer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;

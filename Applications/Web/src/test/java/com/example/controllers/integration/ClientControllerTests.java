@@ -1,13 +1,10 @@
-package com.example.pasik.controllers;
+package com.example.controllers.integration;
 
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.client.ClientUpdateRequest;
-import com.example.tks.adapter.rest.model.dto.real_estate.RealEstateRequest;
-import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;

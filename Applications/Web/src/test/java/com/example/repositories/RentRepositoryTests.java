@@ -1,6 +1,6 @@
-package com.example.pasik.repositories;
+package com.example.repositories;
 
-import com.example.pasik.controllers.ControllerTests;
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.data.model.ClientEnt;
 import com.example.tks.adapter.data.model.RealEstateEnt;
 import com.example.tks.adapter.data.model.RentEnt;

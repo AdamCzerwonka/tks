@@ -1,23 +1,17 @@
-package com.example.pasik.controllers;
+package com.example.controllers.integration;
 
-import com.example.pasik.MongoDbContainer;
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.administrator.AdministratorCreateRequest;
 import com.example.tks.adapter.rest.model.dto.administrator.AdministratorUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.JSONException;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.UUID;
 

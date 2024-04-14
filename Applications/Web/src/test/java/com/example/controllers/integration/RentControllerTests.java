@@ -1,5 +1,6 @@
-package com.example.pasik.controllers;
+package com.example.controllers.integration;
 
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import com.example.tks.app.web.seeder.TestDataSeeder;
 import com.example.tks.core.domain.model.Client;
@@ -26,14 +27,15 @@ import static org.hamcrest.Matchers.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 public class RentControllerTests extends ControllerTests {
-    private final static String BASE_URI = "http://localhost/rent";
+    private final static String BASE_URI = "http://localhost";
+    private final static String ENDPOINT = "/rent";
 
     @LocalServerPort
     private int port;
 
     @BeforeEach
     public void configureRestAssured() {
-        RestAssured.baseURI = BASE_URI;
+        RestAssured.baseURI = BASE_URI + ENDPOINT;
         RestAssured.port = port;
     }
 

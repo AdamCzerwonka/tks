@@ -1,5 +1,6 @@
-package com.example.pasik.controllers;
+package com.example.controllers.integration;
 
+import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.real_estate.RealEstateRequest;
 import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;

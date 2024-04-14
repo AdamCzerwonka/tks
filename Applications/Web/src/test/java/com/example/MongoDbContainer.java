@@ -1,4 +1,4 @@
-package com.example.pasik;
+package com.example;
 
 import org.testcontainers.containers.GenericContainer;
 

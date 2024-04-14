@@ -7,6 +7,7 @@ import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.AdministratorService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -34,10 +35,11 @@ public class AdministratorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<UserResponse> getById(@PathVariable UUID id) throws NotFoundException, JOSEException {
         var result = administratorService.getById(id);
+        var signed = jws.sign(result.getId().toString());
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok().header(HttpHeaders.ETAG, signed).body(UserResponse.fromUser(result));
     }
 
     @GetMapping("/login/many/{login}")

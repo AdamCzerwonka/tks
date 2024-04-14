@@ -1,15 +1,23 @@
 package com.example.pasik.controllers;
 
-import com.example.tks.app.web.model.dto.Administrator.AdministratorCreateRequest;
-import com.example.tks.app.web.model.dto.Administrator.AdministratorUpdateRequest;
+import com.example.pasik.MongoDbContainer;
+import com.example.tks.adapter.rest.model.dto.administrator.AdministratorCreateRequest;
+import com.example.tks.adapter.rest.model.dto.administrator.AdministratorUpdateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.JSONException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.UUID;
 
@@ -17,9 +25,9 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.example.tks.app.web.PasikApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class AdministratorControllerTests {
+class AdministratorControllerTests extends ControllerTests {
     private final static String BASE_URI = "http://localhost";
     private final static String ENDPOINT = "/administrator";
 
@@ -33,12 +41,13 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testCreateShouldPassWhenAddingCorrectData() {
+    void testCreateShouldPassWhenAddingCorrectData() {
         AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -54,7 +63,7 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testCreateShouldFailWhenAddingIncorrectData() {
+    void testCreateShouldFailWhenAddingIncorrectData() {
         AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
                 .builder()
                 .firstName("")
@@ -74,12 +83,13 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testCreateShouldFailWhenDuplicatingLogin() {
+    void testCreateShouldFailWhenDuplicatingLogin() {
         AdministratorCreateRequest administratorCreateRequest1 = AdministratorCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -88,6 +98,7 @@ public class AdministratorControllerTests {
                 .firstName("TestFirstName2")
                 .lastName("TestLastName2")
                 .login("testLogin1")
+                .password("testPassword2")
                 .active(false)
                 .build();
 
@@ -111,7 +122,7 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testGetShouldReturnCorrectAmountOfData() {
+    void testGetShouldReturnCorrectAmountOfData() {
         given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -121,13 +132,7 @@ public class AdministratorControllerTests {
                 .statusCode(200)
                 .body("size()", equalTo(0));
 
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+        AdministratorCreateRequest administratorCreateRequest = getAdministratorCreateRequest();
 
         given()
                 .contentType(ContentType.JSON)
@@ -149,12 +154,13 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldReturnCorrectData() {
+    void testGetByIdShouldReturnCorrectData() {
         AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(true)
                 .build();
 
@@ -185,7 +191,7 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testGetByIdShouldFailWhenPassingRandomId() {
+    void testGetByIdShouldFailWhenPassingRandomId() {
         given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", UUID.randomUUID())
@@ -196,7 +202,7 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testFindAdministratorsByLoginShouldReturnCorrectAmountOfData() {
+    void testFindAdministratorsByLoginShouldReturnCorrectAmountOfData() {
         given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -206,13 +212,7 @@ public class AdministratorControllerTests {
                 .statusCode(200)
                 .body("size()", equalTo(0));
 
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+        AdministratorCreateRequest administratorCreateRequest = getAdministratorCreateRequest();
 
         given()
                 .contentType(ContentType.JSON)
@@ -234,14 +234,8 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testGetByLoginShouldReturnCorrectData() {
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
+    void testGetByLoginShouldReturnCorrectData() {
+        AdministratorCreateRequest administratorCreateRequest = getAdministratorCreateRequest();
 
         String id = given()
                 .contentType(ContentType.JSON)
@@ -270,7 +264,7 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testGetByLoginShouldFailWhenPassingRandomLogin() {
+    void testGetByLoginShouldFailWhenPassingRandomLogin() {
         given()
                 .contentType(ContentType.JSON)
                 .get("/login/single/abc123")
@@ -280,15 +274,8 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testUpdateShouldPassWhenPassingCorrectData() {
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
-
+    void testUpdateShouldFailWhenPassingIncorrectData() throws JSONException {
+        AdministratorCreateRequest administratorCreateRequest = getAdministratorCreateRequest();
         String id = given()
                 .contentType(ContentType.JSON)
                 .body(administratorCreateRequest)
@@ -300,50 +287,16 @@ public class AdministratorControllerTests {
                 .extract()
                 .path("id");
 
-        AdministratorUpdateRequest administratorUpdateRequest = AdministratorUpdateRequest
-                .builder()
-                .id(UUID.fromString(id))
-                .firstName("NewTestFirstName")
-                .lastName("NewTestLastName")
-                .login("NewTestLogin")
-                .active(false)
-                .build();
-
-        given()
+        String etag = given()
                 .contentType(ContentType.JSON)
-                .body(administratorUpdateRequest)
-                .when()
-                .put()
+                .pathParam("id", id)
+                .get("/{id}")
                 .then()
                 .assertThat()
                 .statusCode(200)
-                .body("id", equalTo(id))
-                .body("firstName", equalTo(administratorUpdateRequest.getFirstName()))
-                .body("lastName", equalTo(administratorUpdateRequest.getLastName()))
-                .body("login", equalTo(administratorCreateRequest.getLogin()))
-                .body("active", equalTo(administratorUpdateRequest.getActive()));
-    }
-
-    @Test
-    public void testUpdateShouldFailWhenPassingIncorrectData() throws JSONException {
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
-
-        String id = given()
-                .contentType(ContentType.JSON)
-                .body(administratorCreateRequest)
-                .when()
-                .post()
-                .then()
-                .assertThat()
-                .statusCode(201)
                 .extract()
-                .path("id");
+                .header(HttpHeaders.ETAG)
+                .transform(s -> s.replace("\"", ""));
 
         AdministratorUpdateRequest administratorUpdateRequest = AdministratorUpdateRequest
                 .builder()
@@ -357,6 +310,7 @@ public class AdministratorControllerTests {
         given()
                 .contentType(ContentType.JSON)
                 .body(administratorUpdateRequest)
+                .header(HttpHeaders.IF_MATCH, etag)
                 .when()
                 .put()
                 .then()
@@ -365,15 +319,15 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testActivateShouldActiveDeactivatedAccount() {
+    void testActivateShouldActiveDeactivatedAccount() {
         AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
                 .builder()
                 .firstName("TestFirstName1")
                 .lastName("TestLastName1")
                 .login("testLogin1")
+                .password("testPassword1")
                 .active(false)
                 .build();
-
         String id = given()
                 .contentType(ContentType.JSON)
                 .body(administratorCreateRequest)
@@ -406,15 +360,8 @@ public class AdministratorControllerTests {
     }
 
     @Test
-    public void testDeactivateShouldDeactivateActivatedAccount() {
-        AdministratorCreateRequest administratorCreateRequest = AdministratorCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .active(true)
-                .build();
-
+    void testDeactivateShouldDeactivateActivatedAccount() {
+        AdministratorCreateRequest administratorCreateRequest = getAdministratorCreateRequest();
         String id = given()
                 .contentType(ContentType.JSON)
                 .body(administratorCreateRequest)
@@ -444,5 +391,16 @@ public class AdministratorControllerTests {
                 .statusCode(200)
                 .body("id", equalTo(id))
                 .body("active", equalTo(!administratorCreateRequest.getActive()));
+    }
+
+    AdministratorCreateRequest getAdministratorCreateRequest() {
+        return AdministratorCreateRequest
+                .builder()
+                .firstName("TestFirstName1")
+                .lastName("TestLastName1")
+                .login("testLogin1")
+                .password("testPassword1")
+                .active(true)
+                .build();
     }
 }

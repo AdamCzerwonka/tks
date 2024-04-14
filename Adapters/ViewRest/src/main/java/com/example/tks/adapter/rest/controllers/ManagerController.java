@@ -7,6 +7,7 @@ import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.ManagerService;
+import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,11 @@ public class ManagerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException {
+    public ResponseEntity<?> getById(@PathVariable UUID id) throws NotFoundException, JOSEException {
         var result = managerService.getById(id);
+        var signed = jws.sign(result.getId().toString());
 
-        return ResponseEntity.ok(UserResponse.fromUser(result));
+        return ResponseEntity.ok().header("Etag", signed).body(UserResponse.fromUser(result));
     }
 
     @GetMapping("/login/many/{login}")

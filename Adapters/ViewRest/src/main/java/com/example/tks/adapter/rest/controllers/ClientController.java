@@ -36,7 +36,6 @@ public class ClientController {
 
 
     @GetMapping
-    @RolesAllowed("ADMINISTRATOR")
     public ResponseEntity<List<UserResponse>> get() {
         var result = clientService.get().stream().map(UserResponse::fromUser).toList();
 
@@ -91,7 +90,6 @@ public class ClientController {
     }
 
     @PostMapping("/activate/{id}")
-    @RolesAllowed("ADMINISTRATOR")
     public ResponseEntity<?> activate(@PathVariable UUID id) throws NotFoundException {
         clientService.setActiveStatus(id, true);
 

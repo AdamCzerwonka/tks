@@ -34,12 +34,12 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers("/auth/**").permitAll();
-                    requests.requestMatchers("/realestate/**").authenticated();
-                    requests.requestMatchers("/user/**").authenticated();
-                    requests.requestMatchers("/client/**").authenticated();
-                    requests.requestMatchers("/manager/**").authenticated();
-                    requests.requestMatchers("/rent/**").authenticated();
-                    requests.requestMatchers("/administrator/**").authenticated();
+                    requests.requestMatchers("/realestate/**").permitAll();
+                    requests.requestMatchers("/user/**").permitAll();
+                    requests.requestMatchers("/client/**").permitAll();
+                    requests.requestMatchers("/manager/**").permitAll();
+                    requests.requestMatchers("/rent/**").permitAll();
+                    requests.requestMatchers("/administrator/**").permitAll();
                 });
 
         return http.build();

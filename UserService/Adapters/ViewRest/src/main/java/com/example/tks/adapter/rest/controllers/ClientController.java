@@ -2,14 +2,12 @@ package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.client.ClientUpdateRequest;
-import com.example.tks.adapter.rest.model.dto.rent.RentResponse;
 import com.example.tks.adapter.rest.model.dto.user.UserResponse;
 import com.example.tks.adapter.rest.model.Error;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.ClientService;
-import com.example.tks.core.services.interfaces.RentService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
@@ -31,7 +29,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ClientController {
     private final ClientService clientService;
-    private final RentService rentService;
     private final Jws jws;
 
 
@@ -48,11 +45,6 @@ public class ClientController {
         var signed = jws.sign(result.getId().toString());
 
         return ResponseEntity.ok().header("Etag", signed).body(UserResponse.fromUser(result));
-    }
-
-    @GetMapping("/{id}/rents")
-    public ResponseEntity<List<RentResponse>> getRents(@PathVariable UUID id, @RequestParam(defaultValue = "true") boolean current) {
-        return ResponseEntity.ok(rentService.getByClientId(id, current).stream().map(RentResponse::fromRent).toList());
     }
 
     @GetMapping("/login/many/{login}")

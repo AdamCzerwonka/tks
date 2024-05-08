@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.com/tks/soap" targetNamespace="http://www.example.com/tks/soap" version="1.0">
+    
+  <xs:import schemaLocation="schema2.xsd"/>
+    
+  <xs:element name="createRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="name" type="xs:string"/>
+                
+        <xs:element minOccurs="0" name="address" type="xs:string"/>
+                
+        <xs:element name="area" type="xs:double"/>
+                
+        <xs:element name="price" type="xs:double"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="createRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="realEstate" type="tns:realEstateSoap"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="deleteRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="deleteRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element name="success" type="xs:boolean"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="getRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="id" type="xs:string"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="getRealEstateResponse" type="realEstateResponse"/>
+    
+  <xs:element name="getRealEstatesResponse" nillable="true" type="xs:anyType"/>
+    
+  <xs:element name="updateRealEstateRequest">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="name" type="xs:string"/>
+                
+        <xs:element minOccurs="0" name="address" type="xs:string"/>
+                
+        <xs:element name="area" type="xs:double"/>
+                
+        <xs:element name="price" type="xs:double"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:element name="updateRealEstateResponse">
+        
+    <xs:complexType>
+            
+      <xs:sequence>
+                
+        <xs:element minOccurs="0" name="realEstate" type="tns:realEstateSoap"/>
+              
+      </xs:sequence>
+          
+    </xs:complexType>
+      
+  </xs:element>
+    
+  <xs:complexType name="realEstateSoap">
+        
+    <xs:sequence>
+            
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+            
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+            
+      <xs:element minOccurs="0" name="address" type="xs:string"/>
+            
+      <xs:element name="area" type="xs:double"/>
+            
+      <xs:element name="price" type="xs:double"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+  
+</xs:schema>

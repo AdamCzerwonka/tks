@@ -62,7 +62,7 @@ public class RealEstateControllerTests extends ControllerTests {
         realEstates.add(new RealEstate(UUID.randomUUID(), "TestName4", "Random address 21/6", 25.5, 5000));
         rents = new ArrayList<>();
         rents.add(new Rent(UUID.randomUUID(),
-                new Client(UUID.randomUUID(), "TestFirstName1", "TestLastName1", "client1", true, "Password"),
+                new Client(UUID.randomUUID(), true),
                 realEstates.get(0),
                 LocalDate.now(),
                 null));

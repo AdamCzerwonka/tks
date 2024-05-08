@@ -2,7 +2,6 @@ package com.example.tks.adapter.data.aggregates;
 
 import com.example.tks.adapter.data.model.ClientEnt;
 import com.example.tks.adapter.data.repositories.ClientRepository;
-import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.ports.infrastructure.ClientPort;
@@ -25,25 +24,13 @@ public class ClientRepositoryAdapter implements ClientPort {
     }
 
     @Override
-    public List<Client> findClientsByLogin(String login) {
-        List<ClientEnt> result = clientRepository.findAllByLogin(login);
-        return result.stream().map(ClientEnt::toClient).toList();
-    }
-
-    @Override
     public Optional<Client> getById(UUID id) {
         Optional<ClientEnt> result = clientRepository.getById(id);
         return result.map(ClientEnt::toClient);
     }
 
     @Override
-    public Optional<Client> getByLogin(String login) {
-        Optional<ClientEnt> result = clientRepository.getByLogin(login);
-        return result.map(ClientEnt::toClient);
-    }
-
-    @Override
-    public Client create(Client client) throws LoginAlreadyTakenException {
+    public Client create(Client client) {
         ClientEnt clientEnt = ClientEnt.toClientEnt(client);
         ClientEnt result = clientRepository.create(clientEnt);
         return result.toClient();

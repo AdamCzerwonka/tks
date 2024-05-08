@@ -3,9 +3,9 @@ package com.example.tks.app.web.seeder;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.domain.model.Rent;
-import com.example.tks.core.services.interfaces.ClientService;
 import com.example.tks.core.services.interfaces.RealEstateService;
 import com.example.tks.core.services.interfaces.RentService;
+import com.example.tks.ports.infrastructure.ClientPort;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TestDataSeeder {
     private final RealEstateService realEstateService;
     private final RentService rentService;
-    private final ClientService clientService;
+    private final ClientPort clientService;
 
     private static final List<RealEstate> realEstates = new ArrayList<>();
     private static final List<Rent> rents = new ArrayList<>();
@@ -36,11 +36,11 @@ public class TestDataSeeder {
         clients.clear();
 
         return args -> {
-            Client testClient = new Client(null, "firstName", "lastName", "login", true, "test123");
+            Client testClient = new Client(null, true);
             testClient = clientService.create(testClient);
-            Client testClient2 = new Client(null, "firstName2", "lastName2", "login2", true, "test123");
+            Client testClient2 = new Client(null, true);
             testClient2 = clientService.create(testClient2);
-            Client inactiveClient = new Client(null, "firstNameInactive", "lastNameInactive", "loginInactive", false, "test123");
+            Client inactiveClient = new Client(null, false);
             inactiveClient = clientService.create(inactiveClient);
 
             clients.add(testClient);

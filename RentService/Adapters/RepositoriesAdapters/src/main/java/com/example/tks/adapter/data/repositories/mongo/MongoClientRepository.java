@@ -20,42 +20,22 @@ import java.util.regex.Pattern;
 @Repository
 public class MongoClientRepository implements ClientRepository {
     private final MongoCollection<ClientEnt> collection;
-    private final MongoCollection documentCollection;
 
     public MongoClientRepository(MongoDatabase database) {
-        this.collection = database.getCollection("users", ClientEnt.class);
-        this.documentCollection = database.getCollection("users");
+        this.collection = database.getCollection("clients", ClientEnt.class);
     }
 
     @Override
     public List<ClientEnt> get() {
-        Bson filter = Filters.eq("_clazz", "client");
-
         return collection
-                .find(filter)
-                .into(new ArrayList<>());
-    }
-
-    @Override
-    public List<ClientEnt> findAllByLogin(String login) {
-        Pattern pattern = Pattern.compile(login, Pattern.CASE_INSENSITIVE);
-        Bson filters = Filters.and(
-                Filters.eq("_clazz", "client"),
-                Filters.regex(ClientEnt.LOGIN, pattern)
-        );
-
-        return collection
-                .find(filters)
+                .find()
                 .into(new ArrayList<>());
     }
 
     @Override
     public Optional<ClientEnt> getById(UUID id) {
-        Bson filters = Filters.and(
-                Filters.eq("_clazz", "client"),
-                Filters.eq(ClientEnt.ID, id)
-        );
-        ClientEnt result = collection.find(filters).first();
+        Bson filter = Filters.eq(ClientEnt.ID, id);
+        ClientEnt result = collection.find(filter).first();
         if (result == null) {
             return Optional.empty();
         }
@@ -63,28 +43,7 @@ public class MongoClientRepository implements ClientRepository {
     }
 
     @Override
-    public Optional<ClientEnt> getByLogin(String login) {
-        Bson filters = Filters.and(
-                Filters.eq("_clazz", "client"),
-                Filters.eq(ClientEnt.LOGIN, login)
-        );
-        ClientEnt result = collection.find(filters).first();
-        if (result == null) {
-            return Optional.empty();
-        }
-
-        return Optional.of(result);
-    }
-
-    @Override
-    public ClientEnt create(ClientEnt client) throws LoginAlreadyTakenException {
-        Bson filter = Filters.eq(ClientEnt.LOGIN, client.getLogin());
-        Object existing = documentCollection.find(filter).first();
-
-        if (existing != null) {
-            throw new LoginAlreadyTakenException(client.getLogin());
-        }
-
+    public ClientEnt create(ClientEnt client) {
         client.setId(UUID.randomUUID());
         collection.insertOne(client);
 
@@ -93,16 +52,11 @@ public class MongoClientRepository implements ClientRepository {
 
     @Override
     public ClientEnt update(ClientEnt client) throws NotFoundException {
-        Bson filters = Filters.and(
-                Filters.eq("_clazz", "client"),
-                Filters.eq(ClientEnt.ID, client.getId())
-        );
+        Bson filter = Filters.eq(ClientEnt.ID, client.getId());
         Bson updates = Updates.combine(
-                Updates.set(ClientEnt.FIRST_NAME, client.getFirstName()),
-                Updates.set(ClientEnt.LAST_NAME, client.getLastName()),
-                Updates.set(ClientEnt.ACTIVE, client.getActive())
+                Updates.set(ClientEnt.ACTIVE, client.isActive())
         );
-        collection.updateOne(filters, updates);
+        collection.updateOne(filter, updates);
 
         Optional<ClientEnt> response = getById(client.getId());
 

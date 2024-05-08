@@ -1,15 +1,11 @@
 package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
-import com.example.tks.adapter.rest.model.dto.rent.RentForUserCreateRequest;
 import com.example.tks.adapter.rest.model.dto.rent.RentResponse;
 import com.example.tks.adapter.rest.model.Error;
 import com.example.tks.core.domain.exceptions.*;
 import com.example.tks.core.domain.model.Rent;
-import com.example.tks.core.domain.model.User;
-import com.example.tks.core.services.JwtService;
 import com.example.tks.core.services.interfaces.RentService;
-import com.example.tks.core.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,14 +24,6 @@ import java.util.UUID;
 @RequestMapping("/rent")
 public class RentController {
     private final RentService rentService;
-    private final JwtService jwtService;
-    private final UserService userService;
-
-    private User getUserFromComplexToken(String complexToken) throws NotFoundException {
-        String token = complexToken.replace("Bearer ", "");
-        String login = jwtService.getUserLogin(token);
-        return userService.getByLogin(login);
-    }
 
     @PostMapping
     public ResponseEntity<RentResponse> create(@RequestBody @Valid RentCreateRequest rentRequest) throws NotFoundException
@@ -44,18 +32,6 @@ public class RentController {
                 rentRequest.getClientId(),
                 rentRequest.getRealEstateId(),
                 rentRequest.getStartDate());
-
-        return ResponseEntity.created(new URI("https://localhost/rent/" + result.getId())).body(RentResponse.fromRent(result));
-    }
-
-    @PostMapping("/me")
-    public ResponseEntity<RentResponse> create(@RequestHeader("Authorization") String complexToken, @RequestBody @Valid RentForUserCreateRequest rentForUserRequest) throws NotFoundException
-            , URISyntaxException, RealEstateRentedException, AccountInactiveException {
-        User user = getUserFromComplexToken(complexToken);
-        var result = rentService.create(
-                user.getId(),
-                rentForUserRequest.getRealEstateId(),
-                rentForUserRequest.getStartDate());
 
         return ResponseEntity.created(new URI("https://localhost/rent/" + result.getId())).body(RentResponse.fromRent(result));
     }

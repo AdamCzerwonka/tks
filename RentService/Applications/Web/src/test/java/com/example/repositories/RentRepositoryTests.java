@@ -33,9 +33,9 @@ public class RentRepositoryTests extends ControllerTests {
         RealEstateEnt realEstate2 = new RealEstateEnt(null, "Name2", "Address2", 200, 300);
         RealEstateEnt realEstate3 = new RealEstateEnt(null, "Name3", "Address3", 300, 400);
 
-        client1 = new ClientEnt(null, "FirstName1", "LastName1", "client1", true, "CLIENT", "P@ssw0rd!");
-        ClientEnt client2 = new ClientEnt(null, "FirstName2", "LastName2", "client2", true, "CLIENT", "P@ssw0rd!");
-        ClientEnt client3 = new ClientEnt(null, "FirstName3", "LastName3", "client3", true, "CLIENT", "P@ssw0rd!");
+        client1 = new ClientEnt(null, true);
+        ClientEnt client2 = new ClientEnt(null, true);
+        ClientEnt client3 = new ClientEnt(null, true);
 
 
         rent1 = new RentEnt(null, client1, realEstate1, LocalDate.now(), LocalDate.now().plusDays(10));
@@ -67,7 +67,7 @@ public class RentRepositoryTests extends ControllerTests {
     @Test
     void createTest() {
         RealEstateEnt realEstate4 = new RealEstateEnt(null, "Name4", "Address4", 400, 500);
-        ClientEnt client4 = new ClientEnt(null, "FirstName4", "LastName4", "client4", true, "CLIENT", "P@ssw0rd!");
+        ClientEnt client4 = new ClientEnt(null, true);
         RentEnt rent4 = new RentEnt(null, client4, realEstate4, LocalDate.now(), LocalDate.now().plusDays(10));
 
         assertDoesNotThrow(() -> rentRepository.create(rent4));

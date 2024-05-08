@@ -39,7 +39,7 @@ public class RentServiceTests {
     @BeforeEach
     public void beforeEach() {
         rent = new Rent(UUID.randomUUID(),
-                new Client(UUID.randomUUID(), "TestFirstName1", "TestLastName1", "client1", true, "Password"),
+                new Client(UUID.randomUUID(), true),
                 new RealEstate(UUID.randomUUID(), "TestName1", "Random address 21/3", 12.5, 2000),
                 LocalDate.now(),
                 null);
@@ -68,7 +68,7 @@ public class RentServiceTests {
 
     @Test
     public void createShouldThrowAccountInactiveException() {
-        Client newClient = new Client(UUID.randomUUID(), "TestFirstName1", "TestLastName1", "client1", false, "Password");
+        Client newClient = new Client(UUID.randomUUID(), false);
         when(clientPort.getById(rent.getClient().getId())).thenReturn(Optional.of(newClient));
         when(realEstatePort.getById(rent.getRealEstate().getId())).thenReturn(Optional.of(rent.getRealEstate()));
         Assertions.assertThrows(AccountInactiveException.class, () -> rentService.create(rent.getClient().getId(), rent.getRealEstate().getId(), LocalDate.now()));

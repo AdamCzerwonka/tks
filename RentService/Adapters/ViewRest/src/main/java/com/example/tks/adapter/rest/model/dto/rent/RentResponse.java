@@ -11,14 +11,13 @@ import java.util.UUID;
 @Data
 public class RentResponse {
     UUID id;
-    String clientFirstName;
-    String clientLastName;
+    UUID clientId;
     String realEstateName;
     LocalDate startDate;
     LocalDate endDate;
 
     public static RentResponse fromRent(Rent rent) {
-        return new RentResponse(rent.getId(), rent.getClient().getFirstName(), rent.getClient().getLastName(), rent.getRealEstate().getName(), rent.getStartDate(), rent.getEndDate());
+        return new RentResponse(rent.getId(), rent.getClient().getId(), rent.getRealEstate().getName(), rent.getStartDate(), rent.getEndDate());
     }
 
 }

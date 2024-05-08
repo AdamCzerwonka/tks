@@ -1,9 +1,7 @@
 package com.example.controllers.integration;
 
 import com.example.controllers.ControllerTests;
-import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.real_estate.RealEstateRequest;
-import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
@@ -176,63 +173,63 @@ class RealEstateControllerTests extends ControllerTests {
                 .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
-    @Test
-    void testDeleteShouldFailWhenRealEstateHaveOpenedRent() {
-        String realEstateId = given()
-                .contentType(ContentType.JSON)
-                .body(realEstate1)
-                .when()
-                .post("/realestate")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract()
-                .path("id");
-
-        ClientCreateRequest clientRequest = ClientCreateRequest
-                .builder()
-                .firstName("test")
-                .lastName("Test")
-                .login("test")
-                .password("test")
-                .active(true)
-                .build();
-
-        String clientId = given()
-                .contentType(ContentType.JSON)
-                .body(clientRequest)
-                .when()
-                .post("/client")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract()
-                .path("id");
-
-        RentCreateRequest rentRequest = RentCreateRequest
-                .builder()
-                .clientId(UUID.fromString(clientId))
-                .realEstateId(UUID.fromString(realEstateId))
-                .startDate(LocalDate.now())
-                .build();
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(rentRequest)
-                .when()
-                .post("/rent")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
-
-        given()
-                .pathParam("id", realEstateId)
-                .when()
-                .delete("/realestate/{id}")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
-    }
+//    @Test
+//    void testDeleteShouldFailWhenRealEstateHaveOpenedRent() {
+//        String realEstateId = given()
+//                .contentType(ContentType.JSON)
+//                .body(realEstate1)
+//                .when()
+//                .post("/realestate")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .extract()
+//                .path("id");
+//
+//        ClientCreateRequest clientRequest = ClientCreateRequest
+//                .builder()
+//                .firstName("test")
+//                .lastName("Test")
+//                .login("test")
+//                .password("test")
+//                .active(true)
+//                .build();
+//
+//        String clientId = given()
+//                .contentType(ContentType.JSON)
+//                .body(clientRequest)
+//                .when()
+//                .post("/client")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .extract()
+//                .path("id");
+//
+//        RentCreateRequest rentRequest = RentCreateRequest
+//                .builder()
+//                .clientId(UUID.fromString(clientId))
+//                .realEstateId(UUID.fromString(realEstateId))
+//                .startDate(LocalDate.now())
+//                .build();
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .body(rentRequest)
+//                .when()
+//                .post("/rent")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.CREATED.value());
+//
+//        given()
+//                .pathParam("id", realEstateId)
+//                .when()
+//                .delete("/realestate/{id}")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.BAD_REQUEST.value());
+//    }
 
     @Test
     void testUpdateShouldSuccessWhenGivenCorrectData() {
@@ -295,74 +292,74 @@ class RealEstateControllerTests extends ControllerTests {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @Test
-    void testGetRentsShouldReturnCorrectAmountOfRents() {
-        String realEstateId = given()
-                .contentType(ContentType.JSON)
-                .body(realEstate1)
-                .when()
-                .post("/realestate")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract()
-                .path("id");
-
-        given()
-                .contentType(ContentType.JSON)
-                .pathParam("id", realEstateId)
-                .pathParam("active", true)
-                .when()
-                .get("/realestate/{id}/rents?current={active}")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("size()", is(0));
-
-        ClientCreateRequest clientCreteRequest = ClientCreateRequest
-                .builder()
-                .firstName("TestFirstName1")
-                .lastName("TestLastName1")
-                .login("testLogin1")
-                .password("testPassword1")
-                .active(true)
-                .build();
-
-        String clientId = given()
-                .contentType(ContentType.JSON)
-                .body(clientCreteRequest)
-                .when()
-                .post("/client")
-                .then()
-                .assertThat()
-                .statusCode(201)
-                .extract()
-                .path("id");
-
-        RentCreateRequest rentCreateRequest = RentCreateRequest
-                .builder()
-                .realEstateId(UUID.fromString(realEstateId))
-                .clientId(UUID.fromString(clientId))
-                .startDate(LocalDate.now())
-                .build();
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(rentCreateRequest)
-                .when()
-                .post("/rent")
-                .then()
-                .assertThat()
-                .statusCode(201);
-
-        given()
-                .contentType(ContentType.JSON)
-                .pathParam("id", realEstateId)
-                .when()
-                .get("/realestate/{id}/rents")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("size()", is(1));
-    }
+//    @Test
+//    void testGetRentsShouldReturnCorrectAmountOfRents() {
+//        String realEstateId = given()
+//                .contentType(ContentType.JSON)
+//                .body(realEstate1)
+//                .when()
+//                .post("/realestate")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .extract()
+//                .path("id");
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .pathParam("id", realEstateId)
+//                .pathParam("active", true)
+//                .when()
+//                .get("/realestate/{id}/rents?current={active}")
+//                .then()
+//                .assertThat()
+//                .statusCode(200)
+//                .body("size()", is(0));
+//
+//        ClientCreateRequest clientCreteRequest = ClientCreateRequest
+//                .builder()
+//                .firstName("TestFirstName1")
+//                .lastName("TestLastName1")
+//                .login("testLogin1")
+//                .password("testPassword1")
+//                .active(true)
+//                .build();
+//
+//        String clientId = given()
+//                .contentType(ContentType.JSON)
+//                .body(clientCreteRequest)
+//                .when()
+//                .post("/client")
+//                .then()
+//                .assertThat()
+//                .statusCode(201)
+//                .extract()
+//                .path("id");
+//
+//        RentCreateRequest rentCreateRequest = RentCreateRequest
+//                .builder()
+//                .realEstateId(UUID.fromString(realEstateId))
+//                .clientId(UUID.fromString(clientId))
+//                .startDate(LocalDate.now())
+//                .build();
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .body(rentCreateRequest)
+//                .when()
+//                .post("/rent")
+//                .then()
+//                .assertThat()
+//                .statusCode(201);
+//
+//        given()
+//                .contentType(ContentType.JSON)
+//                .pathParam("id", realEstateId)
+//                .when()
+//                .get("/realestate/{id}/rents")
+//                .then()
+//                .assertThat()
+//                .statusCode(200)
+//                .body("size()", is(1));
+//    }
 }

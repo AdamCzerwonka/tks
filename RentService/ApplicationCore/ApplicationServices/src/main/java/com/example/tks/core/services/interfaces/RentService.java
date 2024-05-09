@@ -5,7 +5,6 @@ import com.example.tks.core.domain.model.Rent;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface RentService {

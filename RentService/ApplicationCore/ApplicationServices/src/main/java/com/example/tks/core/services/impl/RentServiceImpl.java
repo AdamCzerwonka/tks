@@ -1,6 +1,5 @@
 package com.example.tks.core.services.impl;
 
-
 import com.example.tks.core.domain.exceptions.*;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;

@@ -3,6 +3,7 @@ package com.example.tks.app.web.seeder;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.domain.model.Rent;
+import com.example.tks.core.services.interfaces.ClientService;
 import com.example.tks.core.services.interfaces.RealEstateService;
 import com.example.tks.core.services.interfaces.RentService;
 import com.example.tks.ports.infrastructure.ClientPort;
@@ -23,7 +24,7 @@ import java.util.List;
 public class TestDataSeeder {
     private final RealEstateService realEstateService;
     private final RentService rentService;
-    private final ClientPort clientService;
+    private final ClientService clientService;
 
     private static final List<RealEstate> realEstates = new ArrayList<>();
     private static final List<Rent> rents = new ArrayList<>();

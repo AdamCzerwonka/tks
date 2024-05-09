@@ -46,16 +46,15 @@ public class RentServiceImpl implements RentService {
             throw new RealEstateRentedException(realEstateId);
         }
 
-        var rent = Rent
+        Rent rent = Rent
                 .builder()
-                .id(UUID.randomUUID())
                 .client(client.get())
                 .realEstate(realEstate.get())
                 .startDate(startDate)
                 .build();
 
-        rentRepository.create(rent);
-        return rent;
+
+        return rentRepository.create(rent);
     }
 
     @Override

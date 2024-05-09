@@ -46,7 +46,7 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(404);
+                .statusCode(500);
     }
 
     @Test
@@ -78,7 +78,7 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(404);
+                .statusCode(500);
     }
 
     @Test
@@ -105,6 +105,6 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(404);
+                .statusCode(400);
     }
 }

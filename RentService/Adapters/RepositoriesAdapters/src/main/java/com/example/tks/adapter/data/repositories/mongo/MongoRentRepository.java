@@ -65,7 +65,7 @@ public class MongoRentRepository implements RentRepository {
 
     @Override
     public RentEnt create(RentEnt rent) {
-//        rent.setId(UUID.randomUUID());
+        rent.setId(UUID.randomUUID());
         collection.insertOne(rent);
 
         return rent;

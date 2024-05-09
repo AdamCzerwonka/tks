@@ -1,12 +1,16 @@
 package com.example.soap;
 
+import com.example.tks.adapter.soap.endpoints.RealEstateAdapter;
+import com.example.tks.adapter.soap.model.CreateRealEstateRequest;
 import com.example.tks.app.web.PasikApplication;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.services.interfaces.RealEstateService;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
 import java.util.UUID;
 
@@ -22,21 +26,21 @@ class RealEstatesSoapTests {
     RealEstateService realEstateService;
 
     @Test
-    void testGetAll() {
+    void testGetById() {
         UUID uuid = UUID.randomUUID();
-        realEstateService.create(new RealEstate(uuid, "name", "description", 1000, 10));
+        var realEstate = realEstateService.create(new RealEstate(uuid, "name", "description", 1000, 10));
         String query = """
-                <?xml version="1.0" encoding="UTF-8"?>
-                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
-                    <soap:Header/>
-                    <soap:Body>
-                        <rs:getRealEstatesRequest>
-                        </rs:getRealEstatesRequest>
-                    </soap:Body>
-                </soap:Envelope>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                        <rs:getRealEstateRequest>
+                            <id>%s</id>
+                        </rs:getRealEstateRequest>
+                    </soapenv:Body>
+                </soapenv:Envelope>
                 """;
 
-        query = String.format(query, uuid);
+        query = String.format(query, realEstate.getId());
         System.out.println(query);
 
         given()
@@ -46,27 +50,25 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(500);
+                .statusCode(200);
     }
 
     @Test
     void testCreate() {
         UUID id = UUID.randomUUID();
+
         String query = """
-                <?xml version="1.0" encoding="UTF-8"?>
-                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
-                    <soap:Header/>
-                    <soap:Body>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
+                    <soapenv:Header/>
+                    <soapenv:Body>
                         <rs:createRealEstateRequest>
-                            <realEstate>
-                                <id>%s</id>
-                                <name>name</name>
-                                <description>description</description>
-                                <price>1000</price>
-                            </realEstate>
+                            <name type="xsd:string">name</name>
+                            <address>description</address>
+                            <area>10</area>
+                            <price>1000</price>
                         </rs:createRealEstateRequest>
-                    </soap:Body>
-                </soap:Envelope>
+                    </soapenv:Body>
+                </soapenv:Envelope>
                 """;
 
         query = String.format(query, id);
@@ -78,25 +80,25 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(500);
+                .statusCode(200);
     }
 
     @Test
     void testDelete() {
-        UUID id = UUID.randomUUID();
+        UUID uuid = UUID.randomUUID();
+        var realEstate = realEstateService.create(new RealEstate(uuid, "name", "description", 1000, 10));
         String query = """
-                <?xml version="1.0" encoding="UTF-8"?>
-                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
-                    <soap:Header/>
-                    <soap:Body>
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:rs="http://www.example.com/tks/soap">
+                    <soapenv:Header/>
+                    <soapenv:Body>
                         <rs:deleteRealEstateRequest>
-                            <id>%s</id>
-                        </rs:createRealEstateRequest>
-                    </soap:Body>
-                </soap:Envelope>
+                            <id type="xsd:string">%s</id>
+                        </rs:deleteRealEstateRequest>
+                    </soapenv:Body>
+                </soapenv:Envelope>
                 """;
 
-        query = String.format(query, id);
+        query = String.format(query, realEstate.getId());
 
         given()
                 .contentType("text/xml")
@@ -105,6 +107,6 @@ class RealEstatesSoapTests {
                 .post("http://localhost:" + port + "/ws")
                 .then()
                 .assertThat()
-                .statusCode(400);
+                .statusCode(200);
     }
 }

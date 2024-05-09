@@ -123,8 +123,8 @@ public class RentControllerTests extends ControllerTests {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .body("id", equalTo(rent.getId().toString()))
-                .body("client", notNullValue())
-                .body("realEstate", notNullValue())
+                .body("clientId", notNullValue())
+                .body("realEstateName", notNullValue())
                 .body("startDate", equalTo(rent.getStartDate().toString()));
     }
 

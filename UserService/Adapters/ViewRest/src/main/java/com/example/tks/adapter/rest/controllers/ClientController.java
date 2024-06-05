@@ -6,12 +6,14 @@ import com.example.tks.adapter.rest.model.dto.user.UserResponse;
 import com.example.tks.adapter.rest.model.Error;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.model.User;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.ClientService;
 import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.util.UUID;
 public class ClientController {
     private final ClientService clientService;
     private final Jws jws;
+    private final RabbitTemplate rabbitTemplate;
 
 
     @GetMapping
@@ -64,8 +67,11 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody ClientCreateRequest request) throws URISyntaxException, LoginAlreadyTakenException {
         var result = clientService.create(request.ToClient());
+        UserResponse userResponse = UserResponse.fromUser(result);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
+        rabbitTemplate.convertAndSend("appExchange", "message.key", userResponse);
+
+        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(userResponse);
     }
 
     @PutMapping

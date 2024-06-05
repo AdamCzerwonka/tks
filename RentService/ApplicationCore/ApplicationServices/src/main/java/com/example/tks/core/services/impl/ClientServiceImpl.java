@@ -1,12 +1,10 @@
 package com.example.tks.core.services.impl;
 
-import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.services.interfaces.ClientService;
 import com.example.tks.ports.infrastructure.ClientPort;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

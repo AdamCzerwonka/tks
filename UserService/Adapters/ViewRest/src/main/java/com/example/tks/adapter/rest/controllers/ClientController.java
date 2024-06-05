@@ -69,7 +69,7 @@ public class ClientController {
         var result = clientService.create(request.ToClient());
         UserResponse userResponse = UserResponse.fromUser(result);
 
-        rabbitTemplate.convertAndSend("appExchange", "message.key", userResponse);
+        rabbitTemplate.convertAndSend("appExchange", "messages.key", userResponse);
 
         return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(userResponse);
     }

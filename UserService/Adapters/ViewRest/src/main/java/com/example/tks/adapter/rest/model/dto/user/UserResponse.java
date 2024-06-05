@@ -4,11 +4,12 @@ import com.example.tks.core.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @AllArgsConstructor
 @Data
-public class UserResponse {
+public class UserResponse implements Serializable {
     private UUID id;
     private String firstName;
     private String lastName;

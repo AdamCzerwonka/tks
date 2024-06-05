@@ -3,13 +3,21 @@ package com.example.controllers.integration;
 import com.example.controllers.ControllerTests;
 import com.example.tks.adapter.rest.model.dto.rent.RentCreateRequest;
 import com.example.tks.app.web.seeder.TestDataSeeder;
+import com.example.tks.core.domain.exceptions.AccountInactiveException;
+import com.example.tks.core.domain.exceptions.NotFoundException;
+import com.example.tks.core.domain.exceptions.RealEstateRentedException;
 import com.example.tks.core.domain.model.Client;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.domain.model.Rent;
+import com.example.tks.core.services.interfaces.ClientService;
+import com.example.tks.core.services.interfaces.RealEstateService;
+import com.example.tks.core.services.interfaces.RentService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -17,6 +25,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,18 +35,55 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = com.example.tks.app.web.PasikApplication.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class RentControllerTests extends ControllerTests {
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private RealEstateService realEstateService;
+    @Autowired
+    private RentService rentService;
+
     private final static String BASE_URI = "http://localhost";
     private final static String ENDPOINT = "/rent";
+
+    private static final List<RealEstate> realEstates = new ArrayList<>();
+    private static final List<Rent> rents = new ArrayList<>();
+    private static final List<Client> clients = new ArrayList<>();
 
     @LocalServerPort
     private int port;
 
     @BeforeEach
-    public void configureRestAssured() {
+    public void configureRestAssured() throws RealEstateRentedException, NotFoundException, AccountInactiveException {
         RestAssured.baseURI = BASE_URI + ENDPOINT;
         RestAssured.port = port;
+
+        realEstates.clear();
+        rents.clear();
+        clients.clear();
+
+        Client testClient = new Client(null, true);
+        testClient = clientService.create(testClient);
+        Client testClient2 = new Client(null, true);
+        testClient2 = clientService.create(testClient2);
+        Client inactiveClient = new Client(null, false);
+        inactiveClient = clientService.create(inactiveClient);
+
+        clients.add(testClient);
+        clients.add(testClient2);
+        clients.add(inactiveClient);
+
+        RealEstate testRealEstate = new RealEstate(null, "name", "address", 15, 15);
+        testRealEstate = realEstateService.create(testRealEstate);
+        RealEstate testRealEstate2 = new RealEstate(null, "name2", "address2", 21, 21);
+        testRealEstate2 = realEstateService.create(testRealEstate2);
+
+        realEstates.add(testRealEstate);
+        realEstates.add(testRealEstate2);
+
+        Rent rent = rentService.create(testClient.getId(), testRealEstate.getId(), LocalDate.now());
+        rents.add(rent);
     }
 
     @Test
@@ -65,8 +112,7 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testGetByIdShouldPassWhenGivenIdOfExistingRent() {
-        List<Rent> testRents = TestDataSeeder.getRents();
-        Rent rent = testRents.get(0);
+        Rent rent = rents.get(0);
 
         given()
                 .contentType(ContentType.JSON)
@@ -77,17 +123,15 @@ public class RentControllerTests extends ControllerTests {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .body("id", equalTo(rent.getId().toString()))
-                .body("client", notNullValue())
-                .body("realEstate", notNullValue())
+                .body("clientId", notNullValue())
+                .body("realEstateName", notNullValue())
                 .body("startDate", equalTo(rent.getStartDate().toString()));
     }
 
     @Test
     public void testCreateShouldPassWhenAddingCorrectData() {
-        List<Client> testClients = TestDataSeeder.getClients();
-        List<RealEstate> testRealEstates = TestDataSeeder.getRealEstates();
-        Client testClient = testClients.get(0);
-        RealEstate testRealEstate = testRealEstates.get(1);
+        Client testClient = clients.get(0);
+        RealEstate testRealEstate = realEstates.get(1);
 
         RentCreateRequest rentCreateRequest = RentCreateRequest
                 .builder()
@@ -109,10 +153,8 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testCreateShouldFailWhenTryingToRentAlreadyRentedRealEstate() {
-        List<Client> testClients = TestDataSeeder.getClients();
-        List<RealEstate> testRealEstates = TestDataSeeder.getRealEstates();
-        Client testClient = testClients.get(0);
-        RealEstate testRealEstate = testRealEstates.get(0);
+        Client testClient = clients.get(0);
+        RealEstate testRealEstate = realEstates.get(0);
 
         RentCreateRequest rentCreateRequest = RentCreateRequest
                 .builder()
@@ -133,10 +175,8 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testCreateShouldFailWhenTryingToRentWithInactiveClient() {
-        List<Client> testClients = TestDataSeeder.getClients();
-        List<RealEstate> testRealEstates = TestDataSeeder.getRealEstates();
-        Client testClient = testClients.get(2);
-        RealEstate testRealEstate = testRealEstates.get(1);
+        Client testClient = clients.get(2);
+        RealEstate testRealEstate = realEstates.get(1);
 
         RentCreateRequest rentCreateRequest = RentCreateRequest
                 .builder()
@@ -157,10 +197,8 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testCreateShouldFailWhenTryingToSetStartDateInThePast() {
-        List<Client> testClients = TestDataSeeder.getClients();
-        List<RealEstate> testRealEstates = TestDataSeeder.getRealEstates();
-        Client testClient = testClients.get(0);
-        RealEstate testRealEstate = testRealEstates.get(1);
+        Client testClient = clients.get(0);
+        RealEstate testRealEstate = realEstates.get(1);
 
         RentCreateRequest rentCreateRequest = RentCreateRequest
                 .builder()
@@ -181,8 +219,7 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testEndRentShouldPassWhenEndingRent() {
-        List<Rent> testRents = TestDataSeeder.getRents();
-        Rent rent = testRents.get(0);
+        Rent rent = rents.get(0);
 
         given()
                 .contentType(ContentType.JSON)
@@ -207,8 +244,7 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testEndRentShouldFailWhenEndingAlreadyEndedRent() {
-        List<Rent> testRents = TestDataSeeder.getRents();
-        Rent rent = testRents.get(0);
+        Rent rent = rents.get(0);
 
         given()
                 .contentType(ContentType.JSON)
@@ -242,10 +278,8 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testEndRentShouldFailWhenTryingToEndRentThatHasNotStarted() {
-        List<Client> testClients = TestDataSeeder.getClients();
-        List<RealEstate> testRealEstates = TestDataSeeder.getRealEstates();
-        Client testClient = testClients.get(0);
-        RealEstate testRealEstate = testRealEstates.get(1);
+        Client testClient = clients.get(0);
+        RealEstate testRealEstate = realEstates.get(1);
 
         RentCreateRequest rentCreateRequest = RentCreateRequest
                 .builder()
@@ -277,8 +311,7 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testDeleteShouldDeleteActiveRent() {
-        List<Rent> testRents = TestDataSeeder.getRents();
-        Rent rent = testRents.get(0);
+        Rent rent = rents.get(0);
 
         given()
                 .contentType(ContentType.JSON)
@@ -301,8 +334,7 @@ public class RentControllerTests extends ControllerTests {
 
     @Test
     public void testDeleteShouldFailWhenTryingToDeleteFinishedRent() {
-        List<Rent> testRents = TestDataSeeder.getRents();
-        Rent rent = testRents.get(0);
+        Rent rent = rents.get(0);
 
         given()
                 .contentType(ContentType.JSON)

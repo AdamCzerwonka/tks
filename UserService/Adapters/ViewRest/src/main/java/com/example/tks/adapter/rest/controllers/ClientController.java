@@ -2,11 +2,11 @@ package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.client.ClientUpdateRequest;
+import com.example.tks.adapter.rest.model.dto.client.UserMessage;
 import com.example.tks.adapter.rest.model.dto.user.UserResponse;
 import com.example.tks.adapter.rest.model.Error;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
-import com.example.tks.core.domain.model.User;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.ClientService;
 import com.nimbusds.jose.JOSEException;
@@ -67,11 +67,11 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody ClientCreateRequest request) throws URISyntaxException, LoginAlreadyTakenException {
         var result = clientService.create(request.ToClient());
-        UserResponse userResponse = UserResponse.fromUser(result);
+        final var message = new UserMessage(result.getId(), result.getActive());
 
-        rabbitTemplate.convertAndSend("appExchange", "messages.key", userResponse);
+        rabbitTemplate.convertAndSend("appExchange", "messages.create.key", message);
 
-        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(userResponse);
+        return ResponseEntity.created(new URI("http://localhost:8080/realestate/" + result.getId())).body(UserResponse.fromUser(result));
     }
 
     @PutMapping
@@ -91,6 +91,10 @@ public class ClientController {
     public ResponseEntity<?> activate(@PathVariable UUID id) throws NotFoundException {
         clientService.setActiveStatus(id, true);
 
+        final var message = new UserMessage(id, true);
+
+        rabbitTemplate.convertAndSend("appExchange", "messages.activate.key", message);
+
         return ResponseEntity.ok().build();
     }
 
@@ -98,6 +102,11 @@ public class ClientController {
     @RolesAllowed("ADMINISTRATOR")
     public ResponseEntity<?> deactivate(@PathVariable UUID id) throws NotFoundException {
         clientService.setActiveStatus(id, false);
+
+        final var message = new UserMessage(id, false);
+
+        rabbitTemplate.convertAndSend("appExchange", "messages.activate.key", message);
+
 
         return ResponseEntity.ok().build();
 

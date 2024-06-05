@@ -13,22 +13,34 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MqConfig {
     public static final String EXCHANGE_NAME = "appExchange";
-    public static final String QUEUE_SPECIFIC_NAME = "user-queue";
-    public static final String ROUTING_KEY = "messages.key";
+    public static final String USER_CREATE_QUEUE = "user-create-queue";
+    public static final String USER_ACTIVE_QUEUE = "user-active-queue";
+    public static final String ROUTING_CREATE_KEY = "messages.create.key";
+    public static final String ROUTING_ACTIVE_KEY = "messages.activate.key";
 
     @Bean
     public TopicExchange appExchange() {
         return new TopicExchange(EXCHANGE_NAME);
+
+    }
+    @Bean
+    public Queue userCreateQueue() {
+        return new Queue(USER_CREATE_QUEUE);
     }
 
     @Bean
-    public Queue appQueueSpecific() {
-        return new Queue(QUEUE_SPECIFIC_NAME);
+    public Queue userActiveQueue() {
+        return new Queue(USER_ACTIVE_QUEUE);
     }
 
     @Bean
-    public Binding declareBindingSpecific() {
-        return BindingBuilder.bind(appQueueSpecific()).to(appExchange()).with(ROUTING_KEY);
+    public Binding declareBindingUserCreate() {
+        return BindingBuilder.bind(userCreateQueue()).to(appExchange()).with(ROUTING_CREATE_KEY);
+    }
+
+    @Bean
+    public Binding declareBindingUserActive() {
+        return BindingBuilder.bind(userActiveQueue()).to(appExchange()).with(ROUTING_ACTIVE_KEY);
     }
 
     @Bean

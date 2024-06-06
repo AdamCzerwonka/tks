@@ -1,4 +1,4 @@
-package com.example.tks.core.services.model.dto.client;
+package com.example.tks.adapters.messagedata.dto.client;
 
 import com.example.tks.core.domain.model.Client;
 import com.fasterxml.jackson.annotation.JsonProperty;

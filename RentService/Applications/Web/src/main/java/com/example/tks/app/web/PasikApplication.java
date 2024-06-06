@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableConfigurationProperties({RsaKeyProperties.class})
 @SpringBootApplication(scanBasePackages = {"com.example.tks.*"})
-@EnableScheduling
 public class PasikApplication {
 
     public static void main(String[] args) {

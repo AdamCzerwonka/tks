@@ -2,7 +2,6 @@ package com.example.tks.adapter.data.repositories.mongo;
 
 import com.example.tks.adapter.data.model.ClientEnt;
 import com.example.tks.adapter.data.repositories.ClientRepository;
-import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Repository
 public class MongoClientRepository implements ClientRepository {
@@ -44,7 +42,6 @@ public class MongoClientRepository implements ClientRepository {
 
     @Override
     public ClientEnt create(ClientEnt client) {
-        client.setId(UUID.randomUUID());
         collection.insertOne(client);
 
         return client;

@@ -7,6 +7,7 @@
     <modules>
         <module>RepositoriesAdapters</module>
         <module>ViewRest</module>
+        <module>CompensationHandlers</module>
         <module>Security</module>
     </modules>
     <artifactId>Adapters</artifactId>

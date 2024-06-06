@@ -20,4 +20,6 @@ public interface ClientRepository {
     ClientEnt create(ClientEnt client) throws LoginAlreadyTakenException;
 
     ClientEnt update(ClientEnt client) throws NotFoundException;
+
+    void delete(UUID id);
 }

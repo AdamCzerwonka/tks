@@ -23,4 +23,6 @@ public interface ClientService {
     Client update(Client client) throws NotFoundException;
 
     void setActiveStatus(UUID id, boolean active) throws NotFoundException;
+
+    void delete(UUID id);
 }

@@ -2,22 +2,18 @@ package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.client.ClientCreateRequest;
 import com.example.tks.adapter.rest.model.dto.client.ClientResponse;
-import com.example.tks.adapter.rest.model.dto.client.ClientUpdateRequest;
 import com.example.tks.adapter.rest.model.dto.rent.RentResponse;
 import com.example.tks.core.domain.exceptions.LoginAlreadyTakenException;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.interfaces.ClientService;
 import com.example.tks.core.services.interfaces.RentService;
-import com.nimbusds.jose.JOSEException;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;

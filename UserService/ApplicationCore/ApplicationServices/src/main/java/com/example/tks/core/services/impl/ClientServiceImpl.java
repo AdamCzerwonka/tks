@@ -74,4 +74,9 @@ public class ClientServiceImpl implements ClientService {
 
         clientRepository.update(client);
     }
+
+    @Override
+    public void delete(UUID id) {
+        clientRepository.delete(id);
+    }
 }

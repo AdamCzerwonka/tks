@@ -11,5 +11,4 @@ public class PasikApplication {
     public static void main(String[] args) {
         SpringApplication.run(PasikApplication.class, args);
     }
-
 }

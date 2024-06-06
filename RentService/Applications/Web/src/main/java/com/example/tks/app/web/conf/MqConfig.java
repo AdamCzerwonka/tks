@@ -23,6 +23,7 @@ public class MqConfig {
         return new TopicExchange(EXCHANGE_NAME);
 
     }
+
     @Bean
     public Queue userCreateQueue() {
         return new Queue(USER_CREATE_QUEUE);

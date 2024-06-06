@@ -112,4 +112,13 @@ public class MongoClientRepository implements ClientRepository {
 
         return response.get();
     }
+
+    @Override
+    public void delete(UUID id) {
+        Bson filters = Filters.and(
+                Filters.eq("_clazz", "client"),
+                Filters.eq(ClientEnt.ID, id)
+        );
+        collection.deleteOne(filters);
+    }
 }

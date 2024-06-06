@@ -1,4 +1,4 @@
-package com.example.tks.app.web.conf;
+package com.example.tks.adapters.messagedata.conf;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -15,13 +15,16 @@ public class MqConfig {
     public static final String EXCHANGE_NAME = "appExchange";
     public static final String USER_CREATE_QUEUE = "user-create-queue";
     public static final String USER_ACTIVE_QUEUE = "user-active-queue";
+    public static final String USER_CREATE_COMPENSATION_QUEUE = "user-create-compensation-queue";
+    public static final String USER_ACTIVE_COMPENSATION_QUEUE = "user-active-compensation-queue";
     public static final String ROUTING_CREATE_KEY = "messages.create.key";
     public static final String ROUTING_ACTIVE_KEY = "messages.activate.key";
+    public static final String ROUTING_CREATE_COMPENSATION_KEY = "messages.create.compensation.key";
+    public static final String ROUTING_ACTIVE_COMPENSATION_KEY = "messages.activate.compensation.key";
 
     @Bean
     public TopicExchange appExchange() {
         return new TopicExchange(EXCHANGE_NAME);
-
     }
 
     @Bean
@@ -35,6 +38,16 @@ public class MqConfig {
     }
 
     @Bean
+    public Queue userCreateCompensationQueue() {
+        return new Queue(USER_CREATE_COMPENSATION_QUEUE);
+    }
+
+    @Bean
+    public Queue userActiveCompensationQueue() {
+        return new Queue(USER_ACTIVE_COMPENSATION_QUEUE);
+    }
+
+    @Bean
     public Binding declareBindingUserCreate() {
         return BindingBuilder.bind(userCreateQueue()).to(appExchange()).with(ROUTING_CREATE_KEY);
     }
@@ -45,12 +58,21 @@ public class MqConfig {
     }
 
     @Bean
+    public Binding declareBindingUserCreateCompensation() {
+        return BindingBuilder.bind(userCreateCompensationQueue()).to(appExchange()).with(ROUTING_CREATE_COMPENSATION_KEY);
+    }
+
+    @Bean
+    public Binding declareBindingUserActiveCompensation() {
+        return BindingBuilder.bind(userActiveCompensationQueue()).to(appExchange()).with(ROUTING_ACTIVE_COMPENSATION_KEY);
+    }
+
+    @Bean
     public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
         final var rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
         return rabbitTemplate;
     }
-
 
     @Bean
     public Jackson2JsonMessageConverter producerJackson2MessageConverter() {

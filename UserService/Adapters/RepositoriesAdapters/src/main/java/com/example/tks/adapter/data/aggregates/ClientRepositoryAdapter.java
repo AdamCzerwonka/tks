@@ -55,4 +55,9 @@ public class ClientRepositoryAdapter implements ClientPort {
         ClientEnt result = clientRepository.update(clientEnt);
         return result.toClient();
     }
+
+    @Override
+    public void delete(UUID id) {
+        clientRepository.delete(id);
+    }
 }

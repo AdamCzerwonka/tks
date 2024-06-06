@@ -20,4 +20,6 @@ public interface ClientPort {
     Client create(Client client) throws LoginAlreadyTakenException;
 
     Client update(Client client) throws NotFoundException;
+
+    void delete(UUID id);
 }

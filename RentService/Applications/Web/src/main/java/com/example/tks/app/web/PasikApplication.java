@@ -1,10 +1,12 @@
 package com.example.tks.app.web;
 
+import com.example.tks.adapter.security.config.RsaKeyProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableConfigurationProperties({RsaKeyProperties.class})
 @SpringBootApplication(scanBasePackages = {"com.example.tks.*"})
 @EnableScheduling
 public class PasikApplication {

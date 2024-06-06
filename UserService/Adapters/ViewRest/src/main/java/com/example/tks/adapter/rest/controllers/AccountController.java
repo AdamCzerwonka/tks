@@ -1,9 +1,9 @@
 package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.user.ChangePasswordRequest;
+import com.example.tks.adapter.security.JwtService;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.domain.model.User;
-import com.example.tks.core.services.JwtService;
 import com.example.tks.core.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

@@ -1,8 +1,8 @@
 package com.example.tks.adapter.rest.controllers;
 
 import com.example.tks.adapter.rest.model.dto.user.LoginUserRequest;
+import com.example.tks.adapter.security.JwtService;
 import com.example.tks.core.domain.model.User;
-import com.example.tks.core.services.JwtService;
 import com.example.tks.core.services.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class AuthController {
         try {
             User user = userService.getByLogin(userReq.getLogin());
             if (passwordEncoder.matches(userReq.getPassword(), user.getPassword())) {
-                String token = jwtService.createToken(user);
+                String token = jwtService.createToken(user.getId(), user.getLogin(), user.getRole());
                 Map<String, String> response = new HashMap<>();
                 response.put("token", token);
                 return ResponseEntity.ok(response);

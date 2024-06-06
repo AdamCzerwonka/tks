@@ -1,8 +1,8 @@
-package com.example.tks.core.services.MqListener;
+package com.example.tks.adapters.messagedata.MqListener;
 
+import com.example.tks.adapters.messagedata.dto.client.UserMessage;
 import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.interfaces.ClientService;
-import com.example.tks.core.services.model.dto.client.UserMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;

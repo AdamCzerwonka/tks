@@ -8,6 +8,7 @@
         <module>RepositoriesAdapters</module>
         <module>ViewRest</module>
         <module>ViewSoap</module>
+        <module>MessageListeners</module>
     </modules>
     <artifactId>Adapters</artifactId>
 

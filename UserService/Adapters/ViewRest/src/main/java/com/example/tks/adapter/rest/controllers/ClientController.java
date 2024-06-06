@@ -10,6 +10,9 @@ import com.example.tks.core.domain.exceptions.NotFoundException;
 import com.example.tks.core.services.Jws;
 import com.example.tks.core.services.interfaces.ClientService;
 import com.nimbusds.jose.JOSEException;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +36,16 @@ public class ClientController {
     private final ClientService clientService;
     private final Jws jws;
     private final RabbitTemplate rabbitTemplate;
+    private final MeterRegistry meterRegistry;
 
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> get() {
-        var result = clientService.get().stream().map(UserResponse::fromUser).toList();
+        return Metrics.timer("get_clients").record(() -> {
+            var result = clientService.get().stream().map(UserResponse::fromUser).toList();
 
-        return ResponseEntity.ok(result);
+            return ResponseEntity.ok(result);
+        });
     }
 
     @GetMapping("/{id}")

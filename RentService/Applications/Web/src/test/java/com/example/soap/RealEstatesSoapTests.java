@@ -1,16 +1,12 @@
 package com.example.soap;
 
-import com.example.tks.adapter.soap.endpoints.RealEstateAdapter;
-import com.example.tks.adapter.soap.model.CreateRealEstateRequest;
 import com.example.tks.app.web.PasikApplication;
 import com.example.tks.core.domain.model.RealEstate;
 import com.example.tks.core.services.interfaces.RealEstateService;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
 import java.util.UUID;
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -40,6 +41,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(requests -> {
+                    requests.requestMatchers("/auth/**").permitAll();
+                    requests.requestMatchers("/realestate/**").authenticated();
+                    requests.requestMatchers("/user/**").authenticated();
+                    requests.requestMatchers(HttpMethod.POST, "/client").permitAll();
+                    requests.requestMatchers("/client/**").authenticated();
+                    requests.requestMatchers("/manager/**").authenticated();
+                    requests.requestMatchers("/rent/**").authenticated();
+                    requests.requestMatchers("/administrator/**").hasRole("ADMINISTRATOR");
+                })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .build();
     }

@@ -18,7 +18,7 @@ public class MqListener {
         clientService.create(message.toClient());
     }
 
-    @RabbitListener(queues = "user-activate-queue")
+    @RabbitListener(queues = "user-active-queue")
     public void listenActive(UserMessage message) throws NotFoundException {
         clientService.setActiveStatus(message.id(), message.active());
     }

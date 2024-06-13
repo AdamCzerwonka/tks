@@ -50,6 +50,7 @@ public class SecurityConfig {
                     requests.requestMatchers("/manager/**").authenticated();
                     requests.requestMatchers("/rent/**").authenticated();
                     requests.requestMatchers("/administrator/**").hasRole("ADMINISTRATOR");
+                    requests.requestMatchers("/actuator/**").permitAll();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .build();

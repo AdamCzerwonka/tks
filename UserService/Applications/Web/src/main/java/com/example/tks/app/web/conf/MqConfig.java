@@ -15,7 +15,7 @@ public class MqConfig {
     public static final String EXCHANGE_NAME = "appExchange";
     public static final String USER_CREATE_QUEUE = "user-create-queue";
     public static final String USER_ACTIVE_QUEUE = "user-active-queue";
-    public static final String USER_CREATE_COMPENSATION_QUEUE = "user-active-compensation-queue";
+    public static final String USER_CREATE_COMPENSATION_QUEUE = "user-create-compensation-queue";
     public static final String USER_ACTIVE_COMPENSATION_QUEUE = "user-active-compensation-queue";
     public static final String ROUTING_CREATE_KEY = "messages.create.key";
     public static final String ROUTING_ACTIVE_KEY = "messages.activate.key";

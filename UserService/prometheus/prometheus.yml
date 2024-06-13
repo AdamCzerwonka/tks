@@ -5,4 +5,7 @@ scrape_configs:
     static_configs:
       - targets: ['host.docker.internal:443']
         labels:
-          application: 'My Spring Boot Application'
+          application: 'User Service'
+      - targets: ['host.docker.internal:8080']
+        labels:
+          application: 'Rent Service'

@@ -56,6 +56,7 @@ public class SecurityConfig {
                     requests.requestMatchers(mvc.pattern(HttpMethod.POST, "/client")).permitAll();
                     requests.requestMatchers(mvc.pattern("/client/**")).authenticated();
                     requests.requestMatchers(mvc.pattern("/rent/**")).authenticated();
+                    requests.requestMatchers(mvc.pattern("/actuator/**")).permitAll();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .build();
